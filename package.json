@@ -1,0 +1,16 @@
+{
+  "name": "askdo",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Askdo turns a user ask into a reusable business kit and executable multi-agent flow.",
+  "main": "platforms/opencode/.opencode/plugins/askdo.js",
+  "keywords": [
+    "opencode-plugin",
+    "business",
+    "multi-agent",
+    "workflow",
+    "kits"
+  ],
+  "license": "UNLICENSED",
+  "private": true
+}

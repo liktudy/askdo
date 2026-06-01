@@ -20,5 +20,5 @@ platforms/cursor/
 platforms/opencode/
 ```
 
-Codex is the first platform example.
-
+Codex is the first platform example. OpenCode is packaged through a
+Superpowers-style plugin wrapper that registers Askdo skills at runtime.
