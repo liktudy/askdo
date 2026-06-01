@@ -1,0 +1,19 @@
+{
+  "id": "<kit-name>",
+  "name": "<Kit Name>",
+  "status": "active",
+  "purpose": "<kit purpose>",
+  "flow_file": "FLOW.md",
+  "mates_file": "MATES.md",
+  "approval": {
+    "required": false,
+    "risk_level": "normal"
+  },
+  "performance": {
+    "run_count": 0,
+    "success_count": 0,
+    "failure_count": 0,
+    "last_run_at": null
+  }
+}
+

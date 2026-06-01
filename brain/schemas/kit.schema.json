@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Askdo Kit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "status", "purpose", "flow_file", "mates_file", "approval", "performance"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "paused", "under_review", "merge_candidate", "closure_candidate", "closed", "archived"]
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "flow_file": {
+      "type": "string",
+      "const": "FLOW.md"
+    },
+    "mates_file": {
+      "type": "string",
+      "const": "MATES.md"
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "risk_level"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "risk_level": {
+          "type": "string",
+          "enum": ["low", "normal", "high", "critical"]
+        }
+      }
+    },
+    "performance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_count", "success_count", "failure_count", "last_run_at"],
+      "properties": {
+        "run_count": { "type": "integer", "minimum": 0 },
+        "success_count": { "type": "integer", "minimum": 0 },
+        "failure_count": { "type": "integer", "minimum": 0 },
+        "last_run_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  }
+}
+

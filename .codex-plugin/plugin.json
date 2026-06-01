@@ -1,0 +1,33 @@
+{
+  "name": "askdo",
+  "version": "0.1.0",
+  "description": "Askdo turns a user ask into a reusable business kit and executable multi-agent flow.",
+  "author": {
+    "name": "Askdo"
+  },
+  "skills": "./skills",
+  "keywords": [
+    "business",
+    "multi-agent",
+    "workflow",
+    "kits"
+  ],
+  "interface": {
+    "displayName": "Askdo",
+    "shortDescription": "Turn business asks into reusable kits and executable flows.",
+    "longDescription": "Askdo helps a host agent understand a business need, build or reuse a user-owned kit, run the kit flow, and return a practical result.",
+    "developerName": "Askdo",
+    "category": "Productivity",
+    "capabilities": [
+      "Write",
+      "Workflow",
+      "Automation"
+    ],
+    "defaultPrompt": [
+      "Use Askdo to build a competitor analysis kit.",
+      "Use Askdo to run my market research ask.",
+      "Use Askdo to turn this process into a reusable kit."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "askdo",
+  "version": "0.1.0",
+  "description": "Askdo turns a user ask into a reusable business kit and executable multi-agent flow.",
+  "entry": "../../AGENTS.md",
+  "skills": [
+    "../../skills/askdo-intake",
+    "../../skills/askdo-build-kit",
+    "../../skills/askdo-run-kit",
+    "../../skills/askdo-check",
+    "../../skills/askdo-level"
+  ]
+}
+
