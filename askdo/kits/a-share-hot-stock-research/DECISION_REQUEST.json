@@ -1,0 +1,38 @@
+{
+  "decision_id": "a-share-hot-stock-research-build-approval",
+  "kit_id": "a-share-hot-stock-research",
+  "kind": "build_approval",
+  "requested_action": "Approve and run the newly generated A-share hot stock research kit.",
+  "reason": "The selected scenario requires a reusable Askdo kit that can gather current public A-share market information, verify stock-specific facts, and produce bounded non-personalized trading suggestions. Newly generated kits must be approved before execution.",
+  "risk_level": "high",
+  "expected_result": "Askdo will activate the kit, verify current A-share market data and public stock information, then deliver a short-to-medium-term hot-stock information report with bounded suggestions.",
+  "affected_areas": [
+    "askdo/kits/a-share-hot-stock-research/kit.json",
+    "askdo/kits/a-share-hot-stock-research/ENTRY.md",
+    "askdo/kits/a-share-hot-stock-research/FLOW.md",
+    "askdo/kits/a-share-hot-stock-research/MATES.md",
+    "askdo/kits/a-share-hot-stock-research/ROLES.json",
+    "askdo/kits/a-share-hot-stock-research/ROSTER.json"
+  ],
+  "choices": [
+    {
+      "id": "approve_and_run",
+      "label": "Approve and run",
+      "effect": "Activate the kit and continue execution for the confirmed A-share hot-stock research scenario."
+    },
+    {
+      "id": "revise_kit",
+      "label": "Revise kit",
+      "effect": "Keep the kit pending and revise the flow, roles, roster, or planning frame before execution."
+    },
+    {
+      "id": "reject",
+      "label": "Reject",
+      "effect": "Do not activate or run this kit."
+    }
+  ],
+  "default_choice": "revise_kit",
+  "status": "approved",
+  "selected_choice": "approve_and_run",
+  "decided_at": "2026-06-02T15:30:00+08:00"
+}
