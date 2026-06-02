@@ -11,6 +11,9 @@
     "workflow",
     "kits"
   ],
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.15.13"
+  },
   "license": "UNLICENSED",
   "private": true
 }

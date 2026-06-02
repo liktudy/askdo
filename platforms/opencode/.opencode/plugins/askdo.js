@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { tool } from "@opencode-ai/plugin";
+import { runAskdoTurn } from "../../lib/orchestrator.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "../../../..");
@@ -33,6 +35,8 @@ run a flow, prepare a result, validate Askdo assets, or level up a kit from
 meaningful feedback.
 
 OpenCode mapping:
+- Prefer the Askdo `askdo` tool when available. It is the product entry and
+  owns intake, planning gates, scenario selection, kit approval, and run state.
 - Use OpenCode's native skill tool to list and load Askdo skills.
 - Start with the askdo-intake skill for a natural-language business ask.
 - Use askdo-build-kit only when no existing kit fits the ask.
@@ -49,6 +53,31 @@ ${entry}
 };
 
 export const AskdoPlugin = async () => ({
+  tool: {
+    askdo: tool({
+      description:
+        "Run Askdo as a single orchestrated entry: refine an ask, confirm planning, select scenario, build or reuse a kit, request approval, run, and return result artifacts.",
+      args: {
+        input: tool.schema
+          .string()
+          .describe(
+            "User ask or decision input, for example 'use askdo: ...', 'confirm_planning_frame', '1', or 'approve_and_run'.",
+          ),
+        mode: tool.schema
+          .string()
+          .optional()
+          .describe("Optional mode: ask, decision, resume, or reset. Defaults to ask."),
+      },
+      async execute(args, context) {
+        return await runAskdoTurn({
+          input: args.input,
+          mode: args.mode || "ask",
+          context,
+        });
+      },
+    }),
+  },
+
   config: async (config) => {
     config.skills = config.skills || {};
     config.skills.paths = config.skills.paths || [];
