@@ -20,13 +20,17 @@ Use Askdo: analyze the AI coding tools market and produce a competitor compariso
 
 Askdo should:
 
-1. understand the ask
-2. create `askdo/config.json` in the current project if missing
-3. check existing `askdo/kits/`
-4. reuse a kit when suitable
-5. build a new kit only when needed
-6. run or prepare the kit flow
-7. produce the result
+1. analyze ask completeness, feasibility, and closure
+2. identify the scenario planning basis: objective, scope, audience, artifacts, inputs, constraints, assumptions, risk tolerance, execution depth, success criteria, likely kit path, and closure logic
+3. ask whether to confirm, revise, resolve open questions, accept defaults, defer non-blocking planning items, or stop when the planning basis is incomplete, conflicting, or undecided
+4. generate 1 to 3 complete scenario options only after the scenario planning gate is resolved
+5. wait for the user to choose one scenario
+6. create `askdo/config.json` in the current project if missing
+7. check existing `askdo/kits/`
+8. reuse a kit when suitable
+9. build a new kit only when needed
+10. run or prepare the kit flow
+11. produce the result
 
 ## 3. Generated Project Assets
 
@@ -66,7 +70,7 @@ Checks should validate:
 - boundary requirements
 - missing source files
 
-## 5. Preserve User Assets
+## 6. Preserve User Assets
 
 Uninstalling Askdo must not delete kits.
 

@@ -7,7 +7,7 @@ Askdo must stay small, precise, and ready to use.
 - Do not create process logs by default.
 - Do not create temporary drafts by default.
 - Do not create empty placeholder structures unless they carry real meaning.
-- Do not generate extra crews, mates, templates, or flows for possible future use.
+- Do not generate extra crews, roles, mates, templates, or flows for possible future use.
 - Keep final artifacts, error reports, decision requests, and meaningful kit updates only.
 
 ## Records
@@ -29,6 +29,8 @@ Decision needed:
 DECISION_REQUEST.md
 ```
 
+Decision requests are allowed when execution authority is blocked. They must include explicit choices and should replace vague approval prompts.
+
 Do not generate by default:
 
 - process logs
@@ -36,4 +38,3 @@ Do not generate by default:
 - formatting tweak logs
 - temporary drafts
 - repeated failure logs without decision value
-

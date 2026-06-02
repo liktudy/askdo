@@ -8,10 +8,10 @@ Status: initial product scaffold
 
 ## Goal
 
-Askdo turns a user ask into a reusable business capability and an executable multi-agent flow.
+Askdo turns a user ask into a complete user-selected scenario, then into a reusable business capability and an executable multi-agent flow.
 
 ```text
-ask -> build -> flow -> run -> result -> level
+ask -> refine -> scenario -> build -> flow -> run -> result -> level
 ```
 
 The user should not need to understand organization architecture. Askdo hides the internal governance model behind simple product terms.
@@ -46,6 +46,8 @@ Askdo is not:
 ```text
 Host Agent Tool
   -> Askdo brain
+    -> refine ask
+    -> user selects scenario
     -> build or reuse kit
       -> run flow
         -> produce result
@@ -85,8 +87,11 @@ Minimal kit:
 ```text
 kits/<kit-name>/
 |-- kit.json
+|-- ENTRY.md
 |-- FLOW.md
-`-- MATES.md
+|-- MATES.md
+|-- ROLES.json
+`-- ROSTER.json
 ```
 
 Standard kit:
@@ -94,12 +99,119 @@ Standard kit:
 ```text
 kits/<kit-name>/
 |-- kit.json
+|-- ENTRY.md
 |-- FLOW.md
 |-- MATES.md
+|-- ROLES.json
+|-- ROSTER.json
 |-- crews/
 |-- adapters/
 `-- runs/
 ```
+
+## Crew Model
+
+Askdo uses a role-and-mate model:
+
+```text
+kit
+  -> flow
+    -> crew
+      -> role
+        -> mate
+          -> assignment
+            -> result
+```
+
+- A `crew` is a cooperating team inside a kit.
+- A `role` is a stable responsibility seat with accountability, boundary, default permissions, and acceptance checks.
+- A `mate` is a concrete worker assigned to a role. A role may have one or more mates.
+- An `assignment` is a run-specific task owned by a mate.
+
+Mates must not be used as broad phase buckets such as generic builder, runner, handler, or manager roles. If a role needs several distinct capabilities, split it into multiple mates under that role or split the role.
+
+Shared roles are handled through role archetypes and scenario bindings:
+
+- `ROLES.json` owns the role contract and scenario-specific adaptations.
+- `ROSTER.json` owns the current employee or mate roster.
+- `MATES.md` summarizes the operating contract and should not become the roster database.
+
+This lets several scenarios reuse the same role without pretending the scenario work is identical.
+
+## Ask Refinement And Scenario Selection
+
+Askdo must not treat a vague ask as a finished execution request.
+
+Before kit reuse, kit generation, or execution, Askdo checks:
+
+- completeness: goal, subject, input source, output, constraints, audience, and success criteria
+- feasibility: whether the work can be completed inside Askdo boundaries and permissions
+- closure: whether the work has a clear result artifact, acceptance check, and next-step decision
+
+If the ask is incomplete, infeasible, not logically closed, conflicting, or materially undecided, Askdo does not generate scenarios yet. It first names the unresolved planning issues and asks the decision-maker whether to confirm a planning frame, revise it, resolve questions, accept proposed defaults, defer non-blocking items with recorded limits, or stop.
+
+This gate is broader than gap handling. Askdo must settle the scenario planning basis before recommending scenarios. The planning basis includes objective, scope, audience, artifact type, source inputs, constraints, assumptions, risk tolerance, execution depth, success criteria, likely kit path, and closure logic.
+
+If the planning basis is incomplete, conflicting, or still undecided, Askdo may discuss alternatives and propose defaults, but it must not output recommended scenarios yet. The user must first confirm, revise, resolve, default, defer non-blocking planning items, or stop.
+
+Once the scenario planning gate is resolved, Askdo presents 1 to 3 complete scenarios. These scenarios are the result of the refinement discussion, not a substitute for it. The user chooses the scenario before Askdo builds or runs.
+
+Askdo should be creative in the scenario options, but the user has final decision authority.
+
+## Expert Brain Standard
+
+Askdo's brain should behave like a world-class expert panel.
+
+For substantial asks, Askdo separates:
+
+- facts
+- assumptions
+- inferences
+- unknowns
+
+Askdo should challenge weak premises, name bad news clearly, and recommend stronger paths when the user's framing is incomplete.
+
+Askdo must verify names, dates, numbers, citations, source files, schemas, generated artifacts, and current product behavior when the answer depends on them. If it does not know, it must say so.
+
+The tone target is rigorous and direct. Askdo should not flatter, pad, or soften critical facts until they lose decision value. It should also not be needlessly abrasive; bluntness is useful only when it improves decision quality.
+
+## Execution Entry And Approval
+
+Generated kits must not run immediately.
+
+Default generated state:
+
+```json
+{
+  "status": "under_review",
+  "build_approval": {
+    "required": true,
+    "status": "pending"
+  }
+}
+```
+
+After user approval, Askdo may set the kit to `active` and `build_approval.status` to `approved`.
+
+Each single-kit run starts from:
+
+```text
+kits/<kit-name>/ENTRY.md
+```
+
+`ENTRY.md` is the user-facing run doorway. It checks whether the kit is approved, active, in-boundary, and safe to run.
+
+Approval is not an execution command. It is a choice gate with explicit choices:
+
+```text
+Approve and run
+Revise kit
+Reject
+```
+
+The UI shape is secondary. Askdo must expose the choices, record the pending decision, and stop until the user selects one.
+
+For Codex, an adapter may render the gate like a command approval prompt when the host supports it. If not, `DECISION_REQUEST.md` and `DECISION_REQUEST.json` are enough. Askdo must not run fake escalated commands to force a permission dialog.
 
 ## Source Of Truth
 
@@ -110,12 +222,16 @@ Askdo source of truth:
 - `brain/rules/`
 - `brain/schemas/`
 - `brain/flows/`
+- `brain/roles/`
 - `skills/`
 - `templates/`
 - `platforms/`
 - `kits/*/kit.json`
+- `kits/*/ENTRY.md`
 - `kits/*/FLOW.md`
 - `kits/*/MATES.md`
+- `kits/*/ROLES.json`
+- `kits/*/ROSTER.json`
 
 Adapters and runtime output are not source of truth.
 
@@ -123,7 +239,7 @@ Adapters and runtime output are not source of truth.
 
 Askdo uses a hybrid model:
 
-- linear main flow
+- non-linear flow map with decision gates and revision loops
 - local parallel mate work when useful
 - central routing by the brain
 - review loops when quality or boundary risk requires them
@@ -137,6 +253,7 @@ Askdo must preserve:
 - final user authority
 - approvals for high-risk operations
 - permission boundaries
+- role and mate responsibility boundaries
 - reusable assets
 - lifecycle state
 - performance feedback

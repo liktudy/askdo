@@ -3,7 +3,7 @@
   "title": "Askdo Kit",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "name", "status", "purpose", "flow_file", "mates_file", "approval", "performance"],
+  "required": ["id", "name", "status", "purpose", "entry_file", "flow_file", "mates_file", "roles_file", "roster_file", "approval", "build_approval", "performance"],
   "properties": {
     "id": {
       "type": "string",
@@ -21,6 +21,10 @@
       "type": "string",
       "minLength": 1
     },
+    "entry_file": {
+      "type": "string",
+      "const": "ENTRY.md"
+    },
     "flow_file": {
       "type": "string",
       "const": "FLOW.md"
@@ -28,6 +32,14 @@
     "mates_file": {
       "type": "string",
       "const": "MATES.md"
+    },
+    "roles_file": {
+      "type": "string",
+      "const": "ROLES.json"
+    },
+    "roster_file": {
+      "type": "string",
+      "const": "ROSTER.json"
     },
     "approval": {
       "type": "object",
@@ -39,6 +51,19 @@
           "type": "string",
           "enum": ["low", "normal", "high", "critical"]
         }
+      }
+    },
+    "build_approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "status", "approved_at"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "approved", "rejected", "not_required"]
+        },
+        "approved_at": { "type": ["string", "null"], "format": "date-time" }
       }
     },
     "performance": {
@@ -54,4 +79,3 @@
     }
   }
 }
-

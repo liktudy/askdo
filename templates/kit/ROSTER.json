@@ -1,0 +1,11 @@
+{
+  "mates": [
+    {
+      "id": "<mate-id>",
+      "role_id": "<role-id>",
+      "responsibility": "<single concrete responsibility under this role>",
+      "permission": "L0 Observer",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Askdo Decision Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_id",
+    "kit_id",
+    "kind",
+    "requested_action",
+    "reason",
+    "risk_level",
+    "expected_result",
+    "affected_areas",
+    "choices",
+    "default_choice",
+    "status"
+  ],
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "kit_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["build_approval", "run_approval", "permission_expansion", "boundary_decision", "destructive_action"]
+    },
+    "requested_action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "normal", "high", "critical"]
+    },
+    "expected_result": {
+      "type": "string",
+      "minLength": 1
+    },
+    "affected_areas": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "choices": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "label", "effect"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "effect": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "default_choice": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "approved", "rejected", "revision_requested"]
+    },
+    "selected_choice": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "decided_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    }
+  }
+}

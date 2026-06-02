@@ -1,0 +1,27 @@
+{
+  "crew": {
+    "id": "<crew-id>",
+    "name": "<Crew Name>",
+    "purpose": "<crew purpose>"
+  },
+  "roles": [
+    {
+      "id": "<role-id>",
+      "name": "<Role Name>",
+      "archetype": "<shared-role-archetype-or-local>",
+      "accountability": "<stable responsibility seat>",
+      "boundary": "<what this role owns and does not own>",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "<check>"
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "<scenario-name>",
+          "responsibility_adjustment": "<how this role adapts in this scenario>",
+          "permission_adjustment": "none"
+        }
+      ]
+    }
+  ]
+}

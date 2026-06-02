@@ -1,6 +1,6 @@
 # Permission Levels
 
-Permission declarations are operating contracts for mates, adapters, reviews, and future runtime enforcement.
+Permission declarations are operating contracts for roles, mates, assignments, adapters, reviews, and future runtime enforcement.
 
 Use the lowest viable permission level.
 
@@ -51,9 +51,11 @@ permission:
 ## Assignment Rules
 
 - Permission follows task need, not role seniority.
+- A role declares the default permission level for its responsibility seat.
+- A mate inherits the role default unless its responsibility requires a narrower permission.
+- A run assignment may request expanded permission only through review.
 - Do not grant command execution unless required.
 - Do not grant web access unless external information is required.
 - Do not combine unrelated permission needs into one mate.
 - Permission expansion requires review.
 - Unclear permission assignment must be escalated.
-

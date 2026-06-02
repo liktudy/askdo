@@ -1,0 +1,33 @@
+{
+  "decision_id": "<decision-id>",
+  "kit_id": "<kit-id>",
+  "kind": "build_approval",
+  "requested_action": "<action>",
+  "reason": "<why this decision is needed>",
+  "risk_level": "normal",
+  "expected_result": "<what will happen if approved>",
+  "affected_areas": [
+    "<path or area>"
+  ],
+  "choices": [
+    {
+      "id": "approve_and_run",
+      "label": "Approve and run",
+      "effect": "Approve this action and continue execution."
+    },
+    {
+      "id": "revise_kit",
+      "label": "Revise kit",
+      "effect": "Do not run yet; revise the kit or plan first."
+    },
+    {
+      "id": "reject",
+      "label": "Reject",
+      "effect": "Do not run this action."
+    }
+  ],
+  "default_choice": "revise_kit",
+  "status": "pending",
+  "selected_choice": null,
+  "decided_at": null
+}

@@ -1,27 +1,47 @@
 # Mates
 
-## Planner
+## Crew
 
-Responsibility: understand the ask, define the work path, and keep execution inside the kit boundary.
+Source: `ROLES.json`
 
-Permission: L0 Observer by default.
+Name: <crew name>
 
-## Worker
+Purpose: <what this crew is responsible for inside the kit>
 
-Responsibility: perform the core business work requested by the flow.
+## Role Contract
 
-Permission: L2 Writer by default. Use L3 Executor only when command execution is required and approved.
+Source: `ROLES.json`
 
-## Reviewer
+Roles are stable responsibility seats. Shared roles may use the same `archetype` across scenarios, but scenario-specific behavior belongs in `scenario_bindings`, not in copied role definitions.
 
-Responsibility: review the result for correctness, boundary fit, and usefulness.
+## Mate Roster
 
-Permission: L0 Observer by default.
+Source: `ROSTER.json`
+
+Mates are concrete workers assigned to roles. Add, remove, pause, or replace mates in `ROSTER.json`; update this Markdown only when the operating contract changes.
+
+## Assignment Notes
+
+- Assignments are created per run.
+- Each assignment must be owned by one mate from `ROSTER.json`.
+- A mate may have multiple assignments in one run when they fit its responsibility.
+- If an assignment needs unrelated responsibility or expanded permission, escalate before execution.
+
+## Change Rules
+
+- Role changes go in `ROLES.json`.
+- Employee or mate changes go in `ROSTER.json`.
+- Flow routing changes go in `FLOW.md`.
+- Execution entry changes go in `ENTRY.md`.
+- This file summarizes the operating contract and should not become the roster database.
 
 ## Rules
 
-- Each mate has one primary responsibility.
-- Use the lowest viable permission.
+- A crew contains roles.
+- A role is a stable responsibility seat, not a worker.
+- A role must have one or more active mates before execution.
+- A mate is a concrete worker under one role.
+- Each mate has one primary responsibility inside its role.
+- Use the lowest viable permission for each role and mate.
 - Escalate unclear boundaries or permission expansion.
 - Do not perform destructive or irreversible work without explicit approval.
-

@@ -1,13 +1,21 @@
 {
   "id": "<kit-name>",
   "name": "<Kit Name>",
-  "status": "active",
+  "status": "under_review",
   "purpose": "<kit purpose>",
+  "entry_file": "ENTRY.md",
   "flow_file": "FLOW.md",
   "mates_file": "MATES.md",
+  "roles_file": "ROLES.json",
+  "roster_file": "ROSTER.json",
   "approval": {
-    "required": false,
+    "required": true,
     "risk_level": "normal"
+  },
+  "build_approval": {
+    "required": true,
+    "status": "pending",
+    "approved_at": null
   },
   "performance": {
     "run_count": 0,
@@ -16,4 +24,3 @@
     "last_run_at": null
   }
 }
-

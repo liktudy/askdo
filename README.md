@@ -11,10 +11,10 @@ Ask. It does.
 Operating loop:
 
 ```text
-ask -> build -> flow -> run -> result -> level
+ask -> refine -> scenario -> build -> flow -> run -> result -> level
 ```
 
-Askdo lets a user describe a business need. The installed agent plugin then builds or reuses a user-owned `kit`, runs the kit's multi-agent `flow`, produces a result, and records only meaningful feedback for future improvement.
+Askdo lets a user describe a business need. The installed agent plugin first checks whether the ask is complete, feasible, logically closed, and settled enough for scenario planning. If the planning basis is incomplete, conflicting, or undecided, the decision-maker chooses whether to confirm, revise, resolve, accept proposed defaults, defer non-blocking planning items, or stop. Only after that planning gate is resolved does Askdo propose 1 to 3 complete scenarios, then build or reuse a user-owned `kit`, run the kit's multi-agent `flow`, produce a result, and record only meaningful feedback for future improvement.
 
 ## Shape
 
@@ -33,10 +33,14 @@ Askdo is not a heavy agent runtime, not a web dashboard, and not a traditional B
 | Term | Meaning |
 | --- | --- |
 | `brain` | Built-in Askdo capability for understanding, planning, building, checking, and routing. |
+| `scenario` | A complete user-selectable path from ask to result, with outcome, assumptions, artifacts, risk, and closure logic. |
 | `kit` | User-owned reusable business capability pack. |
 | `flow` | Multi-agent business workflow inside a kit. |
-| `crew` | A group of cooperating roles inside a kit. |
-| `mate` | A single role agent inside a kit. |
+| `crew` | A cooperating team inside a kit, made of roles and their assigned mates. |
+| `role` | A stable responsibility seat inside a crew. |
+| `role archetype` | A reusable role pattern that can be adapted through scenario bindings. |
+| `mate` | A concrete worker assigned to a role. A role may have one or more mates. |
+| `assignment` | One run-specific task owned by a mate. |
 | `run` | One execution of a kit. |
 | `result` | Output returned to the user. |
 | `level` | Improvement signal from real usage. |
@@ -56,6 +60,24 @@ askdo/
 |-- config.json
 |-- kits/
 `-- runs/
+```
+
+Before kit generation or execution, Askdo analyzes the ask and settles the scenario planning basis. The decision-maker chooses whether to confirm the planning frame, revise it, resolve open questions, accept proposed defaults, defer non-blocking planning items with recorded limits, or stop. Only after that planning gate is resolved does Askdo present 1 to 3 complete scenarios and wait for the user to choose one.
+
+Generated kits start in review. The user must approve a kit before Askdo runs it.
+
+Approval is a choice gate:
+
+```text
+[Approve and run] [Revise kit] [Reject]
+```
+
+The UI shape is secondary. Askdo must make the choices explicit and stop until the user selects one. `DECISION_REQUEST.md` and `DECISION_REQUEST.json` are the portable record of that choice gate.
+
+Each kit has a single execution entry:
+
+```text
+askdo/kits/<kit-name>/ENTRY.md
 ```
 
 ## Asset Ownership

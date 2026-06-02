@@ -16,8 +16,10 @@ Codex should then:
 2. use Askdo skills
 3. create project assets under `askdo/`
 4. build or reuse a kit
-5. run the kit flow
-6. return the result
+5. request structured approval for newly generated kits
+6. run approved kit flows from `ENTRY.md`
+7. return the result
 
 The Codex wrapper must not redefine Askdo rules. Source of truth stays in `brain/`, `skills/`, and `templates/`.
 
+Approval behavior is specified in `APPROVALS.md`.
