@@ -1,0 +1,34 @@
+{
+  "decision_id": "scenario-ladder-presentation-build-approval",
+  "kit_id": "scenario-ladder-presentation",
+  "kind": "build_approval",
+  "requested_action": "Approve the new kit and enter the run step for automatic simple, medium, and hard scenario execution with presentation delivery.",
+  "reason": "This is a newly generated kit, and Askdo rules require explicit user approval before execution.",
+  "risk_level": "normal",
+  "expected_result": "If approved, Askdo will activate the kit, design three progressive scenarios from the ask, execute them safely, synthesize the results, and generate a presentation deliverable.",
+  "affected_areas": [
+    "askdo/kits/scenario-ladder-presentation/",
+    "askdo/runs/scenario-ladder-presentation-20260602/"
+  ],
+  "choices": [
+    {
+      "id": "approve_and_run",
+      "label": "Approve and run",
+      "effect": "Approve this kit and continue into scenario execution and presentation delivery."
+    },
+    {
+      "id": "revise_kit",
+      "label": "Revise kit",
+      "effect": "Do not run yet; revise the kit, roles, mates, flow, or output plan first."
+    },
+    {
+      "id": "reject",
+      "label": "Reject",
+      "effect": "Do not run this kit."
+    }
+  ],
+  "default_choice": "revise_kit",
+  "status": "approved",
+  "selected_choice": "approve_and_run",
+  "decided_at": "2026-06-02T11:17:57.3064148+08:00"
+}

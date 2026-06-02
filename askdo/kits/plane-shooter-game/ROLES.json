@@ -1,0 +1,110 @@
+{
+  "crew": {
+    "id": "browser-game-delivery-crew",
+    "name": "Browser Game Delivery Crew",
+    "purpose": "Create, verify, and package a small standalone browser game for a user ask."
+  },
+  "roles": [
+    {
+      "id": "game-designer",
+      "name": "Game Designer",
+      "archetype": "game-experience-designer",
+      "accountability": "Define the playable experience before implementation.",
+      "boundary": "Owns game rules, player loop, controls, difficulty curve, and acceptance criteria. Does not implement code or package files.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "The game has a clear start, play, fail, and restart loop.",
+        "Controls and scoring are understandable without extra setup.",
+        "Scope fits a small standalone browser deliverable."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "plane-shooter",
+          "responsibility_adjustment": "Prioritize shooting loop, enemy waves, lives, scoring, and replay.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "gameplay-engineer",
+      "name": "Gameplay Engineer",
+      "archetype": "browser-gameplay-engineer",
+      "accountability": "Implement the reusable gameplay mechanics.",
+      "boundary": "Owns movement, shooting, enemies, collision, score, lives, power-ups, and game state. Does not own visual styling or final packaging.",
+      "default_permission": "L2 Writer",
+      "acceptance_checks": [
+        "Core mechanics are implemented in reusable game logic.",
+        "Collision, scoring, life loss, and power-ups are testable.",
+        "Game state can start, play, and end predictably."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "plane-shooter",
+          "responsibility_adjustment": "Prioritize player movement, firing, enemies, collision, scoring, and lives.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "rendering-engineer",
+      "name": "Rendering Engineer",
+      "archetype": "browser-rendering-engineer",
+      "accountability": "Present the game clearly in the browser.",
+      "boundary": "Owns canvas drawing, animation loop, HUD synchronization, responsive layout, and touch controls. Does not own gameplay rules or test assertions.",
+      "default_permission": "L2 Writer",
+      "acceptance_checks": [
+        "The first screen renders clearly in a browser.",
+        "HUD values reflect game state.",
+        "Keyboard and touch controls are available.",
+        "Layout fits desktop and mobile widths without overlap."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "plane-shooter",
+          "responsibility_adjustment": "Prioritize aircraft, enemies, bullets, HUD, and responsive canvas presentation.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "qa-analyst",
+      "name": "QA Analyst",
+      "archetype": "delivery-quality-analyst",
+      "accountability": "Verify the game before delivery.",
+      "boundary": "Owns test cases, test execution, smoke checks, and defect reports. Does not alter product scope.",
+      "default_permission": "L3 Executor",
+      "acceptance_checks": [
+        "Automated logic tests pass.",
+        "Static package integrity tests pass.",
+        "Browser smoke check renders the game page when a local browser is available."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "plane-shooter",
+          "responsibility_adjustment": "Prioritize collision, scoring, life loss, power-up, static, and browser smoke tests.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "delivery-operator",
+      "name": "Delivery Operator",
+      "archetype": "artifact-delivery-operator",
+      "accountability": "Produce the final user-facing package.",
+      "boundary": "Owns README, zip contents, archive creation, and final handoff. Does not change source conclusions after testing.",
+      "default_permission": "L3 Executor",
+      "acceptance_checks": [
+        "The zip contains all playable files and tests.",
+        "The user can open `index.html` after extraction.",
+        "The final response includes the package path and test status."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "zip-delivery",
+          "responsibility_adjustment": "Prioritize local package contents, archive creation, and handoff clarity.",
+          "permission_adjustment": "none"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "crew": {
+    "id": "launch-readiness-crew",
+    "name": "Launch Readiness Crew",
+    "purpose": "Assess launch readiness and produce a decision-ready package."
+  },
+  "roles": [
+    {
+      "id": "readiness-director",
+      "name": "Readiness Director",
+      "archetype": "launch-assessment-orchestrator",
+      "accountability": "Define launch scope, assumptions, and final decision frame.",
+      "boundary": "Does not deploy or approve real production launch.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": ["Scope is explicit.", "Decision criteria are clear."],
+      "scenario_bindings": [{"scenario": "hard-launch-readiness", "responsibility_adjustment": "Coordinate product, operations, and risk reviews.", "permission_adjustment": "none"}]
+    },
+    {
+      "id": "product-readiness-reviewer",
+      "name": "Product Readiness Reviewer",
+      "archetype": "product-launch-reviewer",
+      "accountability": "Review product completeness, user value, and unresolved gaps.",
+      "boundary": "Reviews product readiness only.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": ["Product gaps are listed.", "User impact is clear."],
+      "scenario_bindings": [{"scenario": "product-readiness", "responsibility_adjustment": "Assess product readiness for launch.", "permission_adjustment": "none"}]
+    },
+    {
+      "id": "operations-readiness-reviewer",
+      "name": "Operations Readiness Reviewer",
+      "archetype": "operational-readiness-reviewer",
+      "accountability": "Review support, process, ownership, and rollout readiness.",
+      "boundary": "Does not modify operational systems.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": ["Ownership is visible.", "Operational gaps are listed."],
+      "scenario_bindings": [{"scenario": "operations-readiness", "responsibility_adjustment": "Assess support and rollout readiness.", "permission_adjustment": "none"}]
+    },
+    {
+      "id": "risk-reviewer",
+      "name": "Risk Reviewer",
+      "archetype": "launch-risk-reviewer",
+      "accountability": "Identify blockers, dependencies, mitigations, and residual risk.",
+      "boundary": "Does not accept risk on behalf of the user.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": ["Risks have severity.", "Mitigations are concrete.", "Unknowns are visible."],
+      "scenario_bindings": [{"scenario": "risk-register", "responsibility_adjustment": "Create risk register inputs.", "permission_adjustment": "none"}]
+    },
+    {
+      "id": "decision-producer",
+      "name": "Decision Producer",
+      "archetype": "launch-decision-package-producer",
+      "accountability": "Produce the final report, risk register, and go/no-go decision artifact.",
+      "boundary": "Formats reviewed conclusions without changing evidence.",
+      "default_permission": "L3 Executor",
+      "acceptance_checks": ["Report is saved.", "Risk CSV is saved.", "Decision recommendation is explicit."],
+      "scenario_bindings": [{"scenario": "decision-delivery", "responsibility_adjustment": "Save launch readiness outputs.", "permission_adjustment": "none"}]
+    }
+  ]
+}

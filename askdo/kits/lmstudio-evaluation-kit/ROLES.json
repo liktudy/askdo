@@ -1,0 +1,169 @@
+{
+  "crew": {
+    "id": "lmstudio-evaluation-crew",
+    "name": "LM Studio Evaluation Crew",
+    "purpose": "Design and deliver a complete LM Studio model evaluation package."
+  },
+  "roles": [
+    {
+      "id": "evaluation-director",
+      "name": "Evaluation Director",
+      "archetype": "benchmark-scope-orchestrator",
+      "accountability": "Frame goals, assumptions, boundaries, scenario fit, and the closed-loop evaluation outcome.",
+      "boundary": "Owns scope and synthesis. Does not invent model or hardware facts.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "Evaluation goals are explicit.",
+        "Model and hardware assumptions are visible.",
+        "The plan has artifacts, acceptance checks, and a next-step decision."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "full-lmstudio-evaluation-kit",
+          "responsibility_adjustment": "Coordinate UI, API, sampling, context, and comparison design into one reusable evaluation package.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "ui-parameter-analyst",
+      "name": "UI Parameter Analyst",
+      "archetype": "local-llm-ui-parameter-mapper",
+      "accountability": "Map LM Studio UI parameter groups into testable parameter rows.",
+      "boundary": "Owns UI-facing parameter coverage. Does not claim exact version-specific labels unless confirmed.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "Context and Offload coverage is present.",
+        "Advanced, Sampling, and Settings coverage is present.",
+        "Version-sensitive labels are marked as assumptions."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "ui-parameter-benchmark",
+          "responsibility_adjustment": "Translate UI parameter groups into a practical matrix for manual or semi-automated testing.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "load-configuration-analyst",
+      "name": "Load Configuration Analyst",
+      "archetype": "context-and-offload-specialist",
+      "accountability": "Design context length, offload, memory, cache, and advanced load-configuration tests.",
+      "boundary": "Owns load-time configuration design. Does not start, unload, download, or install models without approval.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "Load-time and inference-time parameters are separated.",
+        "Context and offload risks are explicit.",
+        "Resource-pressure observations are defined."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "context-offload-evaluation",
+          "responsibility_adjustment": "Design tests for context length, GPU offload, KV cache, advanced load parameters, and resource pressure.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "inference-parameter-analyst",
+      "name": "Inference Parameter Analyst",
+      "archetype": "sampling-and-repeatability-designer",
+      "accountability": "Design per-request sampling, stop, seed, and repeatability tests.",
+      "boundary": "Owns inference parameter design. Does not change load-time settings.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "Sampling parameter ranges are practical.",
+        "Repeatability and seed tests are included.",
+        "Expected effects and risks are documented."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "sampling-evaluation",
+          "responsibility_adjustment": "Cover temperature, top-p, top-k, min-p, penalties, max tokens, stop strings, and seeds.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "api-format-analyst",
+      "name": "API Format Analyst",
+      "archetype": "llm-api-request-case-designer",
+      "accountability": "Design API request cases for chat, responses, structured output, tool use, streaming, and input formats.",
+      "boundary": "Owns request design and expected checks. Does not call external services during kit execution unless separately approved.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "Chat completions cases are included.",
+        "Responses, structured output, and tool-use cases are included.",
+        "Expected validation checks are explicit."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "api-format-evaluation",
+          "responsibility_adjustment": "Create API cases for OpenAI-compatible endpoints and structured output behavior.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "comparison-analyst",
+      "name": "Comparison Analyst",
+      "archetype": "benchmark-difference-analyst",
+      "accountability": "Define measurement, scoring, difference recording, and comparison logic.",
+      "boundary": "Owns comparison method and record structure. Does not alter observed results to fit a preferred conclusion.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "Difference dimensions are measurable.",
+        "CSV record fields are complete.",
+        "Final comparison can explain what changed and why it matters."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "difference-recording",
+          "responsibility_adjustment": "Define quality, speed, reliability, resource, and format-following comparison logic.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "evaluation-delivery-producer",
+      "name": "Evaluation Delivery Producer",
+      "archetype": "benchmark-artifact-producer",
+      "accountability": "Produce the final Markdown, CSV, and JSON artifacts.",
+      "boundary": "Formats reviewed conclusions without changing source assumptions or test logic.",
+      "default_permission": "L3 Executor",
+      "acceptance_checks": [
+        "All required artifacts are saved.",
+        "Artifacts are internally consistent.",
+        "The result is usable without hidden process logs."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "evaluation-delivery",
+          "responsibility_adjustment": "Save the evaluation plan, parameter matrix, API cases, difference log, and final report.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "boundary-and-quality-reviewer",
+      "name": "Boundary And Quality Reviewer",
+      "archetype": "technical-plan-boundary-reviewer",
+      "accountability": "Review the evaluation package for completeness, feasibility, closure, and source safety.",
+      "boundary": "Reviews only. Does not expand permissions or execute tests.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "The plan distinguishes assumptions from facts.",
+        "No unapproved external action is required.",
+        "The output loop is complete."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "evaluation-quality-review",
+          "responsibility_adjustment": "Check LM Studio plan artifacts before delivery.",
+          "permission_adjustment": "none"
+        }
+      ]
+    }
+  ]
+}

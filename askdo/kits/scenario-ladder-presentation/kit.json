@@ -1,0 +1,26 @@
+{
+  "id": "scenario-ladder-presentation",
+  "name": "Scenario Ladder Presentation",
+  "status": "active",
+  "purpose": "Automatically design and execute a simple, medium, and hard scenario ladder for an Askdo ask, synthesize the evidence, and deliver the result as a presentation.",
+  "entry_file": "ENTRY.md",
+  "flow_file": "FLOW.md",
+  "mates_file": "MATES.md",
+  "roles_file": "ROLES.json",
+  "roster_file": "ROSTER.json",
+  "approval": {
+    "required": true,
+    "risk_level": "normal"
+  },
+  "build_approval": {
+    "required": true,
+    "status": "approved",
+    "approved_at": "2026-06-02T11:17:57.3064148+08:00"
+  },
+  "performance": {
+    "run_count": 1,
+    "success_count": 1,
+    "failure_count": 0,
+    "last_run_at": "2026-06-02T11:26:26.5880847+08:00"
+  }
+}

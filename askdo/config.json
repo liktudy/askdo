@@ -1,0 +1,8 @@
+{
+  "product": "Askdo",
+  "version": "0.1",
+  "kits_dir": "./askdo/kits",
+  "runs_dir": "./askdo/runs",
+  "ownership": "user-managed",
+  "uninstall_policy": "preserve_kits"
+}

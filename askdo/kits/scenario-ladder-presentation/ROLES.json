@@ -1,0 +1,159 @@
+{
+  "crew": {
+    "id": "scenario-ladder-presentation-crew",
+    "name": "Scenario Ladder Presentation Crew",
+    "purpose": "Design and execute a progressive scenario ladder, then deliver the results as a presentation."
+  },
+  "roles": [
+    {
+      "id": "scenario-director",
+      "name": "Scenario Director",
+      "archetype": "run-orchestrator",
+      "accountability": "Interpret the ask, control scope, coordinate scenario execution, and keep the run inside Askdo boundaries.",
+      "boundary": "Owns run framing, assignment mapping, sequencing, and final go/no-go checks. Does not execute specialist tasks when another role owns them.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "The ask is translated into a clear run boundary.",
+        "Simple, medium, and hard scenarios are sequenced safely.",
+        "Execution stops when approval or boundary rules require it."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "simple-ladder-run",
+          "responsibility_adjustment": "Keep the simple scenario narrow and evidence-focused.",
+          "permission_adjustment": "none"
+        },
+        {
+          "scenario": "medium-ladder-run",
+          "responsibility_adjustment": "Coordinate multiple roles and ordinary failure handling.",
+          "permission_adjustment": "none"
+        },
+        {
+          "scenario": "hard-ladder-run",
+          "responsibility_adjustment": "Coordinate boundary review, branching, and delivery pressure.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "scenario-designer",
+      "name": "Scenario Designer",
+      "archetype": "graded-scenario-designer",
+      "accountability": "Create simple, medium, and hard scenarios from the user ask.",
+      "boundary": "Owns scenario intent, inputs, expected evidence, and success criteria. Does not run the scenarios.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "Each scenario is derived from the ask.",
+        "Levels increase in complexity without increasing avoidable risk.",
+        "Each level has clear success criteria and fallback handling."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "simple-ladder-run",
+          "responsibility_adjustment": "Design the smallest useful proof of the ask.",
+          "permission_adjustment": "none"
+        },
+        {
+          "scenario": "medium-ladder-run",
+          "responsibility_adjustment": "Design a multi-step scenario with role coordination.",
+          "permission_adjustment": "none"
+        },
+        {
+          "scenario": "hard-ladder-run",
+          "responsibility_adjustment": "Design an end-to-end stress scenario with ambiguity, branching, and delivery requirements.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "boundary-reviewer",
+      "name": "Boundary Reviewer",
+      "archetype": "approval-and-safety-reviewer",
+      "accountability": "Check approval status, permission needs, safety boundaries, and stop conditions.",
+      "boundary": "Owns approval and boundary decisions. Does not silently approve execution, expand permissions, or change source conclusions.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "Missing approvals produce a choice gate.",
+        "Unsafe scenario scope is revised or skipped.",
+        "Expanded permissions are requested separately."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "all-ladder-levels",
+          "responsibility_adjustment": "Review every level before execution and before presentation delivery.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "scenario-executor",
+      "name": "Scenario Executor",
+      "archetype": "workspace-scenario-operator",
+      "accountability": "Execute approved non-destructive scenario steps and capture evidence.",
+      "boundary": "Owns local, non-destructive execution inside the workspace. Does not modify source files unless the approved scenario explicitly requires it.",
+      "default_permission": "L3 Executor",
+      "acceptance_checks": [
+        "Execution is workspace-scoped and non-destructive.",
+        "Evidence is concise and tied to the scenario success criteria.",
+        "Blocked execution is reported instead of forced."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "simple-ladder-run",
+          "responsibility_adjustment": "Execute a narrow low-risk check.",
+          "permission_adjustment": "none"
+        },
+        {
+          "scenario": "medium-ladder-run",
+          "responsibility_adjustment": "Execute coordinated checks and ordinary recovery paths.",
+          "permission_adjustment": "none"
+        },
+        {
+          "scenario": "hard-ladder-run",
+          "responsibility_adjustment": "Execute only approved safe stress steps and record skipped unsafe parts.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "result-analyst",
+      "name": "Result Analyst",
+      "archetype": "evidence-synthesis-analyst",
+      "accountability": "Synthesize scenario evidence into level results, confidence, recommendations, and next actions.",
+      "boundary": "Owns analysis and recommendation framing. Does not change execution evidence or delivery formatting independently.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": [
+        "Every conclusion ties back to scenario evidence.",
+        "Recommendations are prioritized and actionable.",
+        "Confidence and limitations are explicit."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "result-synthesis",
+          "responsibility_adjustment": "Merge simple, medium, and hard outputs into one coherent source summary.",
+          "permission_adjustment": "none"
+        }
+      ]
+    },
+    {
+      "id": "presentation-producer",
+      "name": "Presentation Producer",
+      "archetype": "presentation-delivery-specialist",
+      "accountability": "Produce and verify the presentation after source conclusions are stable.",
+      "boundary": "Owns presentation structure, formatting, rendering, and delivery verification. Does not alter source conclusions during formatting.",
+      "default_permission": "L3 Executor",
+      "acceptance_checks": [
+        "The presentation covers all three levels.",
+        "Formatting preserves reviewed conclusions.",
+        "The deck is verified before delivery."
+      ],
+      "scenario_bindings": [
+        {
+          "scenario": "presentation-delivery",
+          "responsibility_adjustment": "Use delivery processing to create and verify a presentation file.",
+          "permission_adjustment": "none"
+        }
+      ]
+    }
+  ]
+}

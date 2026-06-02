@@ -1,0 +1,7 @@
+{
+  "mates": [
+    {"id": "note-reader", "role_id": "brief-analyst", "responsibility": "Read notes and extract facts, decisions, risks, and actions.", "permission": "L0 Observer", "status": "active"},
+    {"id": "brief-writer", "role_id": "brief-producer", "responsibility": "Write and save DAILY_BRIEF.md.", "permission": "L3 Executor", "status": "active"},
+    {"id": "clarity-checker", "role_id": "quality-reviewer", "responsibility": "Review the brief for clarity and unsupported claims.", "permission": "L0 Observer", "status": "active"}
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "mates": [
+    {"id": "feedback-normalizer", "role_id": "feedback-analyst", "responsibility": "Normalize raw feedback into distinct items.", "permission": "L0 Observer", "status": "active"},
+    {"id": "theme-clusterer", "role_id": "theme-strategist", "responsibility": "Group feedback into themes.", "permission": "L0 Observer", "status": "active"},
+    {"id": "priority-scorer", "role_id": "priority-reviewer", "responsibility": "Score severity, frequency, and priority.", "permission": "L0 Observer", "status": "active"},
+    {"id": "triage-writer", "role_id": "triage-producer", "responsibility": "Write FEEDBACK_TRIAGE.md and ACTION_TABLE.csv.", "permission": "L3 Executor", "status": "active"}
+  ]
+}

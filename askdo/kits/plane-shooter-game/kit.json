@@ -1,0 +1,26 @@
+{
+  "id": "plane-shooter-game",
+  "name": "Plane Shooter Game",
+  "status": "active",
+  "purpose": "Create, test, and package a small browser-based plane shooter game as a downloadable deliverable.",
+  "entry_file": "ENTRY.md",
+  "flow_file": "FLOW.md",
+  "mates_file": "MATES.md",
+  "roles_file": "ROLES.json",
+  "roster_file": "ROSTER.json",
+  "approval": {
+    "required": false,
+    "risk_level": "low"
+  },
+  "build_approval": {
+    "required": true,
+    "status": "approved",
+    "approved_at": "2026-06-01T15:39:45.7956094+08:00"
+  },
+  "performance": {
+    "run_count": 1,
+    "success_count": 1,
+    "failure_count": 0,
+    "last_run_at": "2026-06-01T15:39:45.7956094+08:00"
+  }
+}

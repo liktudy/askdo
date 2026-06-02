@@ -1,0 +1,26 @@
+{
+  "id": "human-capital-advisory",
+  "name": "Human Capital Advisory",
+  "status": "active",
+  "purpose": "Design and run a human capital advisory capability that helps enterprises diagnose internal structures, design tailored operating improvements, and guide systematic implementation.",
+  "entry_file": "ENTRY.md",
+  "flow_file": "FLOW.md",
+  "mates_file": "MATES.md",
+  "roles_file": "ROLES.json",
+  "roster_file": "ROSTER.json",
+  "approval": {
+    "required": false,
+    "risk_level": "normal"
+  },
+  "build_approval": {
+    "required": true,
+    "status": "approved",
+    "approved_at": "2026-06-01T16:32:00.5401491+08:00"
+  },
+  "performance": {
+    "run_count": 1,
+    "success_count": 1,
+    "failure_count": 0,
+    "last_run_at": "2026-06-01T16:32:00.5401491+08:00"
+  }
+}

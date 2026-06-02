@@ -1,0 +1,39 @@
+{
+  "crew": {
+    "id": "daily-brief-crew",
+    "name": "Daily Brief Crew",
+    "purpose": "Convert a small note set into a concise daily brief."
+  },
+  "roles": [
+    {
+      "id": "brief-analyst",
+      "name": "Brief Analyst",
+      "archetype": "note-signal-extractor",
+      "accountability": "Extract facts, decisions, risks, and next actions.",
+      "boundary": "Does not invent missing details.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": ["Relevant facts are captured.", "Unknowns are marked explicitly."],
+      "scenario_bindings": [{"scenario": "simple-daily-brief", "responsibility_adjustment": "Keep analysis narrow and fast.", "permission_adjustment": "none"}]
+    },
+    {
+      "id": "brief-producer",
+      "name": "Brief Producer",
+      "archetype": "markdown-brief-producer",
+      "accountability": "Write the brief artifact.",
+      "boundary": "Formats conclusions without changing source meaning.",
+      "default_permission": "L3 Executor",
+      "acceptance_checks": ["Brief is short.", "Actions are visible.", "Output is saved."],
+      "scenario_bindings": [{"scenario": "brief-delivery", "responsibility_adjustment": "Save DAILY_BRIEF.md.", "permission_adjustment": "none"}]
+    },
+    {
+      "id": "quality-reviewer",
+      "name": "Quality Reviewer",
+      "archetype": "clarity-reviewer",
+      "accountability": "Check clarity and unresolved items.",
+      "boundary": "Reviews only; does not expand scope.",
+      "default_permission": "L0 Observer",
+      "acceptance_checks": ["No unsupported claims.", "Unresolved items are visible."],
+      "scenario_bindings": [{"scenario": "brief-review", "responsibility_adjustment": "Check final brief quality.", "permission_adjustment": "none"}]
+    }
+  ]
+}

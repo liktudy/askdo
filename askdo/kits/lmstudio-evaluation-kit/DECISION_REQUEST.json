@@ -1,0 +1,34 @@
+{
+  "decision_id": "lmstudio-evaluation-kit-build-approval",
+  "kit_id": "lmstudio-evaluation-kit",
+  "kind": "build_approval",
+  "requested_action": "Approve the new LM Studio Evaluation Kit and run it to generate the full evaluation plan, parameter matrix, API cases, difference log, and final report.",
+  "reason": "This is a newly generated kit, and Askdo rules require explicit user approval before execution.",
+  "risk_level": "normal",
+  "expected_result": "If approved, Askdo will activate the kit and generate file-backed LM Studio evaluation artifacts under askdo/runs/lmstudio-evaluation-kit-20260602/.",
+  "affected_areas": [
+    "askdo/kits/lmstudio-evaluation-kit/",
+    "askdo/runs/lmstudio-evaluation-kit-20260602/"
+  ],
+  "choices": [
+    {
+      "id": "approve_and_run",
+      "label": "Approve and run",
+      "effect": "Approve this kit and generate the LM Studio evaluation artifacts."
+    },
+    {
+      "id": "revise_kit",
+      "label": "Revise kit",
+      "effect": "Do not run yet; revise the kit, roles, mates, flow, or output plan first."
+    },
+    {
+      "id": "reject",
+      "label": "Reject",
+      "effect": "Do not run this kit."
+    }
+  ],
+  "default_choice": "revise_kit",
+  "status": "approved",
+  "selected_choice": "approve_and_run",
+  "decided_at": "2026-06-02T12:25:37.9346412+08:00"
+}
