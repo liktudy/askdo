@@ -17,6 +17,8 @@
 - User-owned kits must not be deleted by default.
 - Runtime outputs must not be committed by default.
 - Text source files must use UTF-8 encoding.
+- Internal source files must stay in English.
+- User-owned kit roots may live outside the current folder and must be resolved through the registry.
 
 ## P1 Required Standards
 
@@ -42,7 +44,12 @@
 - Agents must keep creativity tied to feasibility, evidence, and user authority.
 - Kit formal artifacts are limited to Markdown, CSV, and JSON.
 - External deliverables are produced through delivery processing.
-- Internal source-of-truth files and generated kit source files must be written in English.
+- Machine-readable schema keys, enum values, filenames, and control states must remain English.
+- Generated kit source defaults to English; user-facing kit narrative and deliverables may follow configured language.
+- Askdo must distinguish external user kit quality from internal Askdo project quality.
+- External kit audit must classify verdicts as `pass`, `pass_with_level_notes`, `revise_before_run`, or `reject_or_rebuild`.
+- Non-blocking kit improvements must become level notes instead of audit failures.
+- Internal Askdo self review must be keyword-triggered maintenance.
 
 ## P2 Recommended Practices
 
@@ -51,6 +58,8 @@
 - Prefer archive over physical deletion.
 - Keep prompts concise and precise.
 - Keep documentation small enough to maintain.
+- Prefer registry-based kit discovery over current-folder assumptions.
+- Use quality scorecards when audit findings need prioritization.
 
 ## P3 Local Details
 
@@ -58,3 +67,6 @@
 - Delivery templates.
 - External tool details.
 - Runtime-specific export formats.
+- Kit maturity labels.
+- Diff audit strategy.
+- Overlap detection heuristics.

@@ -65,6 +65,16 @@ confirm_planning_frame
 approve_and_run
 ```
 
+Quality modes are also available through the same tool:
+
+```text
+mode=list_kits
+mode=audit_kit input=<kit id or name>
+mode=internal_workshop
+```
+
+These modes are read-only by default. `internal_workshop` reviews Askdo itself and should be used only when the user explicitly asks for internal review.
+
 The tool persists per-session state under:
 
 ```text

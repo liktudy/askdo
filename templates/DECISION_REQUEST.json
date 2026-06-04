@@ -21,6 +21,11 @@
       "effect": "Do not run yet; revise the kit or plan first."
     },
     {
+      "id": "record_level_and_run",
+      "label": "Record level and run",
+      "effect": "Record non-blocking level notes and continue execution."
+    },
+    {
       "id": "reject",
       "label": "Reject",
       "effect": "Do not run this action."

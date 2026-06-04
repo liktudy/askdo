@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Askdo Project Config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["product", "version", "ownership", "uninstall_policy"],
+  "properties": {
+    "product": {
+      "type": "string",
+      "const": "Askdo"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kits_dir": {
+      "type": "string"
+    },
+    "runs_dir": {
+      "type": "string"
+    },
+    "asset_roots": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kits": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "runs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "deliverables": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "language": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "internal_source": { "type": "string", "const": "en" },
+        "kit_source_default": { "type": "string", "minLength": 2 },
+        "deliverable_default": { "type": "string", "minLength": 2 },
+        "ask_when_unspecified": { "type": "boolean" }
+      }
+    },
+    "capability_exposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "public": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "internal_keyword_only": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "maintenance": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "ownership": {
+      "type": "string",
+      "enum": ["user-managed"]
+    },
+    "uninstall_policy": {
+      "type": "string",
+      "enum": ["preserve_kits"]
+    }
+  }
+}

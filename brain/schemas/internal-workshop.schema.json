@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Askdo Internal Workshop Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "scope", "target", "verdict", "generated_at", "findings", "proposed_decisions", "backlog_items", "recommended_next_action"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "scope": {
+      "type": "string",
+      "const": "internal_askdo"
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path"],
+      "properties": {
+        "id": { "type": "string", "const": "askdo" },
+        "path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "safe_sync_updates_available", "structural_decision_required", "blocked"]
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_consistency": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "schema_template_alignment": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "skill_boundary_clarity": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "platform_adapter_alignment": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "capability_exposure": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "language_policy_alignment": { "type": "integer", "minimum": 0, "maximum": 10 }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/internal_finding" }
+    },
+    "proposed_decisions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/proposed_decision" }
+    },
+    "backlog_items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/backlog_item" }
+    },
+    "recommended_next_action": {
+      "type": "string",
+      "enum": ["apply_safe_doc_updates", "apply_safe_sync_updates", "create_decision_request", "defer_to_internal_backlog", "stop"]
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "internal_finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "category", "priority", "summary", "evidence", "recommendation"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["safe_documentation_update", "schema_or_template_update", "skill_behavior_update", "platform_adapter_update", "structural_decision_required", "deferred_backlog_item"]
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "normal", "high", "critical"]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidence" }
+        },
+        "recommendation": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "proposed_decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "decision_needed", "options"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "decision_needed": {
+          "type": "string",
+          "minLength": 1
+        },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "backlog_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "priority", "summary", "owner_area"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["accepted", "deferred", "needs_decision", "rejected"]
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "normal", "high", "critical"]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner_area": {
+          "type": "string",
+          "enum": ["docs", "brain", "schemas", "flows", "roles", "skills", "templates", "platforms", "product"]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "note"],
+      "properties": {
+        "file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

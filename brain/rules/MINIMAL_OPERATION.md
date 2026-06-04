@@ -9,6 +9,7 @@ Askdo must stay small, precise, and ready to use.
 - Do not create empty placeholder structures unless they carry real meaning.
 - Do not generate extra crews, roles, mates, templates, or flows for possible future use.
 - Keep final artifacts, error reports, decision requests, and meaningful kit updates only.
+- Keep audit reports and level notes only when they carry reusable decision value.
 
 ## Records
 
@@ -38,3 +39,4 @@ Do not generate by default:
 - formatting tweak logs
 - temporary drafts
 - repeated failure logs without decision value
+- verbose audit transcripts

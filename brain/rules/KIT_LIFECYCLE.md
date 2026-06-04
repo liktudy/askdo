@@ -23,6 +23,8 @@ Review a kit when:
 - kit output no longer creates useful value
 - domain boundary becomes unclear
 - the user requests review
+- the latest audit verdict is `pass_with_level_notes`
+- non-blocking level notes accumulate into a structural pattern
 
 ## Build Approval
 
@@ -73,5 +75,32 @@ Track only meaningful signals:
 - overlap warnings
 - last run date
 - last success date
+- last audit verdict
+- last audit date
+- level note count
 
 Do not create process logs by default.
+
+## Quality Verdicts
+
+External kit audit verdicts are:
+
+- `pass`: runnable without meaningful improvement notes.
+- `pass_with_level_notes`: runnable with non-blocking improvements recorded for later.
+- `revise_before_run`: not runnable until blocking issues are fixed.
+- `reject_or_rebuild`: boundary or structure should be rejected or rebuilt.
+
+`pass_with_level_notes` must not be treated as audit failure.
+
+## Maturity Signals
+
+Kit maturity is a later lifecycle signal and should not replace status.
+
+Suggested maturity labels:
+
+- `draft`
+- `reviewed`
+- `active`
+- `stable`
+- `mature`
+- `needs_refactor`

@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "scope": "internal_askdo",
+  "target": {
+    "id": "askdo",
+    "path": "."
+  },
+  "verdict": "safe_sync_updates_available",
+  "generated_at": "<ISO-8601 timestamp>",
+  "scores": {
+    "source_consistency": 0,
+    "schema_template_alignment": 0,
+    "skill_boundary_clarity": 0,
+    "platform_adapter_alignment": 0,
+    "capability_exposure": 0,
+    "language_policy_alignment": 0
+  },
+  "findings": [],
+  "proposed_decisions": [],
+  "backlog_items": [],
+  "recommended_next_action": "apply_safe_sync_updates",
+  "unknowns": []
+}

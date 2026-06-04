@@ -6,6 +6,7 @@ Use these files as the source of truth:
 
 - `README.md`
 - `docs/DESIGN.md`
+- `docs/QUALITY_AND_ASSET_GOVERNANCE.md`
 - `docs/QUICK_START.md`
 - `docs/GLOSSARY.md`
 - `brain/rules/`
@@ -15,6 +16,13 @@ Use these files as the source of truth:
 - `skills/`
 - `templates/`
 - `platforms/`
+- `askdo/config.json`
+- `askdo/kits/*/kit.json`
+- `askdo/kits/*/ENTRY.md`
+- `askdo/kits/*/FLOW.md`
+- `askdo/kits/*/MATES.md`
+- `askdo/kits/*/ROLES.json`
+- `askdo/kits/*/ROSTER.json`
 - `kits/*/kit.json`
 - `kits/*/ENTRY.md`
 - `kits/*/FLOW.md`
@@ -39,9 +47,14 @@ Use these files as the source of truth:
 - Installing, updating, or uninstalling Askdo must preserve user-owned kits.
 - Runtime outputs under `runs/` are local artifacts and must not be committed unless the user explicitly asks to preserve them.
 - Text source files must use UTF-8 encoding.
-- Internal source-of-truth files and generated kit source files must be written in English.
+- Internal source-of-truth files must be written in English.
+- Machine-readable schema keys, enum values, filenames, and control states must remain English.
+- Generated kit source defaults to English; user-facing kit narrative and external deliverables may use the configured output language.
 - Generated kit formal artifacts are limited to `.md`, `.csv`, and `.json`.
 - External deliverables are produced through delivery processing and must not change source conclusions.
+- Askdo must support user-owned kit roots outside the current folder through `askdo/config.json`.
+- Askdo must distinguish external user kit quality from internal Askdo project quality.
+- Internal Askdo self review must be keyword-triggered and must not be exposed as ordinary public onboarding.
 - Askdo must distinguish facts, assumptions, inferences, and unknowns for substantial asks.
 - Askdo must verify names, dates, numbers, citations, source files, schemas, generated artifacts, and current product behavior when the answer depends on them.
 - Askdo must state uncertainty instead of inventing facts.
@@ -49,6 +62,7 @@ Use these files as the source of truth:
 ## Operating Rules
 
 - Reuse an existing kit before building a new one.
+- List and resolve existing kits through the registry before assuming no kit exists.
 - Build a new kit only when the user need has a distinct reusable business capability boundary.
 - Each mate must have one primary responsibility.
 - Each role must define a stable responsibility seat, and each role must have one or more mates assigned to it.
@@ -58,6 +72,8 @@ Use these files as the source of truth:
 - Use the lowest viable permission level.
 - Do not create process logs by default.
 - Keep final artifacts, error reports, decision requests, and meaningful kit updates only.
+- Use `pass_with_level_notes` when a kit can run but has useful non-blocking improvements.
+- Record non-blocking kit improvements as level notes instead of treating every improvement as an audit failure.
 - Agents may propose creative alternatives within their boundaries, but execution authority still follows approval and boundary rules.
 - Agents may challenge weak premises, deliver negative conclusions, and recommend stronger paths when evidence supports them.
 - Creativity must remain tied to feasibility, evidence, and user authority.
@@ -78,6 +94,8 @@ Use public Askdo terms when facing users:
 - `result`
 - `level`
 - `brain`
+- `registry`
+- `audit`
 
 Avoid exposing heavy internal organization language such as headquarters, subsidiary, company, department, workflow factory, or organization design in public onboarding.
 
@@ -97,6 +115,7 @@ Askdo offers 1 to 3 complete scenarios for the user to choose.
 Askdo builds or reuses a kit.
 Askdo runs the flow or prepares the run.
 Askdo returns a result.
+Askdo records meaningful level signals and quality notes.
 ```
 
 Codex is the first platform example. Other platforms must be added under `platforms/` without changing `brain/`, `skills/`, or `templates/`.

@@ -27,7 +27,7 @@
     },
     "kind": {
       "type": "string",
-      "enum": ["build_approval", "run_approval", "permission_expansion", "boundary_decision", "destructive_action"]
+      "enum": ["build_approval", "run_approval", "audit_decision", "internal_workshop_decision", "permission_expansion", "boundary_decision", "destructive_action"]
     },
     "requested_action": {
       "type": "string",

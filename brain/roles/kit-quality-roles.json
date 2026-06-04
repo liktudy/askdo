@@ -1,0 +1,44 @@
+{
+  "role_archetypes": [
+    {
+      "id": "kit-structure-auditor",
+      "responsibility": "Check kit source files, schema compliance, lifecycle state, and entry consistency.",
+      "default_permission": "read_only"
+    },
+    {
+      "id": "kit-boundary-reviewer",
+      "responsibility": "Review whether the kit boundary is closed, reusable, and not materially overlapping another kit.",
+      "default_permission": "read_only"
+    },
+    {
+      "id": "flow-reviewer",
+      "responsibility": "Review decision gates, failure paths, revision loops, delivery steps, and closure logic.",
+      "default_permission": "read_only"
+    },
+    {
+      "id": "crew-reviewer",
+      "responsibility": "Review role, mate, assignment, and roster responsibility clarity.",
+      "default_permission": "read_only"
+    },
+    {
+      "id": "risk-permission-reviewer",
+      "responsibility": "Review approval points, risk levels, permission expansion, and irreversible action controls.",
+      "default_permission": "read_only"
+    },
+    {
+      "id": "output-quality-reviewer",
+      "responsibility": "Review usefulness, acceptance criteria, deliverability, and user-facing language fit.",
+      "default_permission": "read_only"
+    },
+    {
+      "id": "level-curator",
+      "responsibility": "Convert non-blocking findings into concise level notes without creating process logs.",
+      "default_permission": "read_only"
+    },
+    {
+      "id": "internal-system-reviewer",
+      "responsibility": "Review Askdo rules, flows, schemas, skills, templates, adapters, and public language consistency.",
+      "default_permission": "read_only"
+    }
+  ]
+}

@@ -31,17 +31,21 @@ ASKDO_BOOTSTRAP_CONTEXT
 You have Askdo installed for OpenCode.
 
 Use Askdo when the user asks to handle a business ask, build or reuse a kit,
-run a flow, prepare a result, validate Askdo assets, or level up a kit from
-meaningful feedback.
+run a flow, prepare a result, validate Askdo assets, list kits, audit a kit,
+or level up a kit from meaningful feedback. Use internal workshop capability
+only when the user explicitly asks to review Askdo itself.
 
 OpenCode mapping:
 - Prefer the Askdo `askdo` tool when available. It is the product entry and
   owns intake, planning gates, scenario selection, kit approval, and run state.
 - Use OpenCode's native skill tool to list and load Askdo skills.
 - Start with the askdo-intake skill for a natural-language business ask.
+- Use askdo-list-kits when the user asks to show, search, or inventory kits.
 - Use askdo-build-kit only when no existing kit fits the ask.
 - Use askdo-run-kit when a kit should be executed or prepared.
 - Use askdo-check for preflight validation.
+- Use askdo-audit-kit for deep external user kit quality review.
+- Use askdo-internal-workshop only for keyword-triggered Askdo self review.
 - Use askdo-level after a run when reusable learning should be captured.
 
 Askdo source of truth:
@@ -56,7 +60,7 @@ export const AskdoPlugin = async () => ({
   tool: {
     askdo: tool({
       description:
-        "Run Askdo as a single orchestrated entry: refine an ask, confirm planning, select scenario, build or reuse a kit, request approval, run, and return result artifacts.",
+        "Run Askdo as a single orchestrated entry: refine an ask, confirm planning, select scenario, build or reuse a kit, request approval, run, list kits, audit kits, or run an internal Askdo workshop.",
       args: {
         input: tool.schema
           .string()
@@ -66,7 +70,7 @@ export const AskdoPlugin = async () => ({
         mode: tool.schema
           .string()
           .optional()
-          .describe("Optional mode: ask, decision, resume, or reset. Defaults to ask."),
+          .describe("Optional mode: ask, decision, resume, reset, list_kits, audit_kit, or internal_workshop. Defaults to ask."),
       },
       async execute(args, context) {
         return await runAskdoTurn({

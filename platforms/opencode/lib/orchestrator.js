@@ -43,8 +43,371 @@ const saveState = (ctx, state) => writeJson(statePathFor(ctx), state);
 
 const format = (payload) => JSON.stringify(payload, null, 2);
 
+const defaultProjectConfig = {
+  product: "Askdo",
+  version: "0.1",
+  kits_dir: "./askdo/kits",
+  runs_dir: "./askdo/runs",
+  asset_roots: {
+    kits: ["./askdo/kits"],
+    runs: ["./askdo/runs"],
+    deliverables: ["./askdo/deliverables"],
+  },
+  language: {
+    internal_source: "en",
+    kit_source_default: "en",
+    deliverable_default: "en",
+    ask_when_unspecified: true,
+  },
+  capability_exposure: {
+    public: [
+      "askdo-intake",
+      "askdo-list-kits",
+      "askdo-check",
+      "askdo-build-kit",
+      "askdo-run-kit",
+      "askdo-audit-kit",
+      "askdo-level",
+    ],
+    internal_keyword_only: ["askdo-internal-workshop"],
+    maintenance: [],
+  },
+  ownership: "user-managed",
+  uninstall_policy: "preserve_kits",
+};
+
+const configPathFor = (worktree) => path.join(worktree, "askdo", "config.json");
+
+const normalizeConfig = (config = {}) => ({
+  ...defaultProjectConfig,
+  ...config,
+  asset_roots: {
+    ...defaultProjectConfig.asset_roots,
+    ...(config.asset_roots || {}),
+  },
+  language: {
+    ...defaultProjectConfig.language,
+    ...(config.language || {}),
+  },
+  capability_exposure: {
+    ...defaultProjectConfig.capability_exposure,
+    ...(config.capability_exposure || {}),
+  },
+});
+
+const ensureProjectConfig = (worktree) => {
+  const filePath = configPathFor(worktree);
+  const existing = readJson(filePath);
+  if (!existing) {
+    writeJson(filePath, defaultProjectConfig);
+    return defaultProjectConfig;
+  }
+  return normalizeConfig(existing);
+};
+
+const resolveProjectPath = (worktree, value) =>
+  path.isAbsolute(value) ? value : path.join(worktree, value);
+
+const firstAssetRoot = (worktree, type, legacyKey, fallback) => {
+  const config = ensureProjectConfig(worktree);
+  const roots = config.asset_roots?.[type] || [];
+  return resolveProjectPath(worktree, roots[0] || config[legacyKey] || fallback);
+};
+
+const assetRootsFor = (worktree, type, legacyKey, fallback) => {
+  const config = ensureProjectConfig(worktree);
+  const roots = [
+    ...(config.asset_roots?.[type] || []),
+    config[legacyKey],
+    fallback,
+  ].filter(Boolean);
+  return [...new Set(roots.map((root) => resolveProjectPath(worktree, root)))];
+};
+
+const kitRootFor = (worktree) => firstAssetRoot(worktree, "kits", "kits_dir", "./askdo/kits");
+
+const runRootFor = (worktree) => firstAssetRoot(worktree, "runs", "runs_dir", "./askdo/runs");
+
+const relativeArtifactPath = (worktree, filePath) =>
+  path.relative(worktree, filePath).replace(/\\/g, "/");
+
 const isConfirmPlanning = (input) =>
   ["confirm_planning_frame", "confirm", "1", "确认"].includes(cleanInput(input));
+
+const requiredKitFiles = ["kit.json", "ENTRY.md", "FLOW.md", "MATES.md", "ROLES.json", "ROSTER.json"];
+
+const readKitSummary = (worktree, kitDir, rootDir) => {
+  const kitPath = path.join(kitDir, "kit.json");
+  const kit = readJson(kitPath);
+  if (!kit) return null;
+  const missing_files = requiredKitFiles.filter((file) => !fs.existsSync(path.join(kitDir, file)));
+  return {
+    id: kit.id || path.basename(kitDir),
+    name: kit.name || kit.id || path.basename(kitDir),
+    status: kit.status || "unknown",
+    approval_status: kit.build_approval?.status || "unknown",
+    last_run_at: kit.performance?.last_run_at || null,
+    last_audit_verdict: kit.quality?.last_audit_verdict || null,
+    maturity: kit.quality?.maturity || null,
+    source_root: relativeArtifactPath(worktree, kitDir),
+    registry_root: relativeArtifactPath(worktree, rootDir),
+    missing_files,
+    kit,
+  };
+};
+
+const listKits = (worktree) => {
+  const roots = assetRootsFor(worktree, "kits", "kits_dir", "./askdo/kits");
+  const seen = new Set();
+  const kits = [];
+  const warnings = [];
+
+  for (const root of roots) {
+    if (!fs.existsSync(root)) {
+      warnings.push({ type: "missing_root", path: relativeArtifactPath(worktree, root) });
+      continue;
+    }
+
+    for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const kitDir = path.join(root, entry.name);
+      const kitPath = path.join(kitDir, "kit.json");
+      if (!fs.existsSync(kitPath) || seen.has(kitPath)) continue;
+      seen.add(kitPath);
+      const summary = readKitSummary(worktree, kitDir, root);
+      if (summary) kits.push(summary);
+    }
+  }
+
+  return {
+    status: "completed",
+    mode: "list_kits",
+    kit_count: kits.length,
+    kits: kits.map(({ kit, ...summary }) => summary),
+    warnings,
+  };
+};
+
+const findKit = (worktree, input) => {
+  const target = cleanInput(input);
+  const result = listKits(worktree);
+  if (!target) return { result, kit: null, error: "Missing kit id or name." };
+
+  const lowerTarget = target.toLowerCase();
+  const kitSummary = result.kits.find((kit) =>
+    [kit.id, kit.name, kit.source_root].some((value) => (value || "").toLowerCase() === lowerTarget),
+  ) || result.kits.find((kit) =>
+    [kit.id, kit.name, kit.source_root].some((value) => (value || "").toLowerCase().includes(lowerTarget)),
+  );
+
+  if (!kitSummary) return { result, kit: null, error: `Kit not found: ${target}` };
+  const kitDir = resolveProjectPath(worktree, kitSummary.source_root);
+  return {
+    result,
+    kit: readKitSummary(worktree, kitDir, resolveProjectPath(worktree, kitSummary.registry_root)),
+    error: null,
+  };
+};
+
+const auditKit = (worktree, input) => {
+  const { result, kit, error } = findKit(worktree, input);
+  if (error) {
+    return {
+      status: "blocked",
+      mode: "audit_kit",
+      message: error,
+      available_kits: result.kits.map((item) => ({ id: item.id, name: item.name, source_root: item.source_root })),
+    };
+  }
+
+  const blocking_issues = [];
+  const improvement_notes = [];
+  const scores = {
+    structure: 10,
+    boundary: 8,
+    flow: 8,
+    crew: 8,
+    approval: 10,
+    output: 8,
+    reuse: 7,
+    language: 8,
+  };
+
+  if (kit.missing_files.length) {
+    scores.structure = Math.max(0, 10 - kit.missing_files.length * 2);
+    blocking_issues.push({
+      id: "missing-required-files",
+      type: "structure",
+      priority: "high",
+      blocking: true,
+      summary: `Missing required files: ${kit.missing_files.join(", ")}`,
+      recommendation: "Add the missing formal kit source files before running or approving this kit.",
+    });
+  }
+
+  if (kit.status !== "active") {
+    scores.approval = Math.min(scores.approval, 6);
+    blocking_issues.push({
+      id: "kit-not-active",
+      type: "lifecycle",
+      priority: "high",
+      blocking: true,
+      summary: `Kit status is ${kit.status}, not active.`,
+      recommendation: "Resolve lifecycle status before execution.",
+    });
+  }
+
+  if (kit.approval_status !== "approved") {
+    scores.approval = Math.min(scores.approval, 5);
+    blocking_issues.push({
+      id: "build-approval-not-approved",
+      type: "approval",
+      priority: "high",
+      blocking: true,
+      summary: `Build approval is ${kit.approval_status}, not approved.`,
+      recommendation: "Use a decision gate before execution.",
+    });
+  }
+
+  if (!kit.maturity) {
+    improvement_notes.push({
+      id: "missing-maturity-signal",
+      type: "lifecycle",
+      priority: "normal",
+      blocking: false,
+      summary: "Kit has no quality maturity signal.",
+      recommendation: "Set quality.maturity after the next deep audit or stable reuse milestone.",
+    });
+  }
+
+  if (!kit.last_audit_verdict) {
+    improvement_notes.push({
+      id: "missing-audit-verdict",
+      type: "lifecycle",
+      priority: "normal",
+      blocking: false,
+      summary: "Kit has no last audit verdict.",
+      recommendation: "Run a deep kit audit and record last_audit_verdict when the findings matter.",
+    });
+  }
+
+  const verdict = blocking_issues.length
+    ? "revise_before_run"
+    : improvement_notes.length
+      ? "pass_with_level_notes"
+      : "pass";
+
+  return {
+    schema_version: "1.0",
+    status: "completed",
+    mode: "audit_kit",
+    scope: "external_kit",
+    target: { id: kit.id, path: kit.source_root },
+    verdict,
+    generated_at: nowIso(),
+    scores,
+    blocking_issues,
+    improvement_notes,
+    recommended_next_action: blocking_issues.length ? "revise_kit" : improvement_notes.length ? "record_level_and_run" : "approve_and_run",
+    unknowns: result.warnings.map((warning) => `Registry warning: ${warning.type} ${warning.path}`),
+  };
+};
+
+const internalWorkshop = (worktree) => {
+  const sourceFiles = [
+    "AGENTS.md",
+    "README.md",
+    "docs/QUALITY_AND_ASSET_GOVERNANCE.md",
+    "brain/schemas/internal-workshop.schema.json",
+    "templates/internal-workshop/INTERNAL_WORKSHOP_REPORT.md",
+    "templates/internal-workshop/INTERNAL_WORKSHOP_REPORT.json",
+    "skills/askdo-internal-workshop/SKILL.md",
+    "platforms/opencode/lib/orchestrator.js",
+    "platforms/opencode/.opencode/plugins/askdo.js",
+    "platforms/codex/.codex-plugin/plugin.json",
+  ];
+  const findings = [];
+  const missing = sourceFiles.filter((file) => !fs.existsSync(path.join(worktree, file)));
+
+  if (missing.length) {
+    findings.push({
+      id: "missing-internal-source-files",
+      category: "structural_decision_required",
+      priority: "high",
+      summary: `Missing internal source files: ${missing.join(", ")}`,
+      evidence: missing.map((file) => ({ file, note: "Expected internal workshop source file is missing." })),
+      recommendation: "Restore missing internal self-review files before relying on internal workshop output.",
+    });
+  }
+
+  const codexManifest = readJson(path.join(worktree, "platforms", "codex", ".codex-plugin", "plugin.json"));
+  const codexSkills = new Set((codexManifest?.skills || []).map((skill) => skill.replace("../../skills/", "")));
+  for (const skill of ["askdo-list-kits", "askdo-audit-kit", "askdo-internal-workshop"]) {
+    if (!codexSkills.has(skill)) {
+      findings.push({
+        id: `${skill}-missing-from-codex`,
+        category: "platform_adapter_update",
+        priority: "normal",
+        summary: `${skill} is not registered in the Codex plugin manifest.`,
+        evidence: [{ file: "platforms/codex/.codex-plugin/plugin.json", note: "Manifest skill list does not include the capability." }],
+        recommendation: "Add the skill to the Codex plugin manifest.",
+      });
+    }
+  }
+
+  const opencodePlugin = path.join(worktree, "platforms", "opencode", ".opencode", "plugins", "askdo.js");
+  const pluginText = fs.existsSync(opencodePlugin) ? fs.readFileSync(opencodePlugin, "utf8") : "";
+  for (const phrase of ["askdo-list-kits", "askdo-audit-kit", "askdo-internal-workshop"]) {
+    if (!pluginText.includes(phrase)) {
+      findings.push({
+        id: `${phrase}-missing-from-opencode-bootstrap`,
+        category: "platform_adapter_update",
+        priority: "normal",
+        summary: `${phrase} is not described in the OpenCode bootstrap context.`,
+        evidence: [{ file: "platforms/opencode/.opencode/plugins/askdo.js", note: "Bootstrap text does not mention the capability." }],
+        recommendation: "Add the capability boundary to OpenCode bootstrap text.",
+      });
+    }
+  }
+
+  const structural = findings.some((finding) => finding.category === "structural_decision_required");
+  const verdict = structural ? "structural_decision_required" : findings.length ? "safe_sync_updates_available" : "pass";
+
+  return {
+    schema_version: "1.0",
+    status: "completed",
+    mode: "internal_workshop",
+    scope: "internal_askdo",
+    target: { id: "askdo", path: "." },
+    verdict,
+    generated_at: nowIso(),
+    scores: {
+      source_consistency: missing.length ? 6 : 9,
+      schema_template_alignment: fs.existsSync(path.join(worktree, "brain", "schemas", "internal-workshop.schema.json")) ? 9 : 4,
+      skill_boundary_clarity: 9,
+      platform_adapter_alignment: findings.some((finding) => finding.category === "platform_adapter_update") ? 7 : 9,
+      capability_exposure: 9,
+      language_policy_alignment: 9,
+    },
+    findings,
+    proposed_decisions: structural
+      ? [{
+          id: "restore-internal-workshop-source",
+          decision_needed: "Restore missing internal workshop source files before future maintenance runs.",
+          options: ["restore_missing_sources", "defer_to_internal_backlog"],
+        }]
+      : [],
+    backlog_items: findings.map((finding) => ({
+      id: finding.id,
+      status: finding.category === "structural_decision_required" ? "needs_decision" : "accepted",
+      priority: finding.priority,
+      summary: finding.summary,
+      owner_area: finding.category === "platform_adapter_update" ? "platforms" : "product",
+    })),
+    recommended_next_action: structural ? "create_decision_request" : findings.length ? "apply_safe_sync_updates" : "stop",
+    unknowns: [],
+  };
+};
 
 const makePlanningFrame = (ask) => ({
   objective: ask,
@@ -99,7 +462,7 @@ const makeScenarioOptions = (state) => [
   closure_logic: "The scenario closes with a reviewable result or an explicit blocked decision.",
 }));
 
-const kitDirFor = (worktree, kitId) => path.join(worktree, "askdo", "kits", kitId);
+const kitDirFor = (worktree, kitId) => path.join(kitRootFor(worktree), kitId);
 
 const createPendingKit = ({ worktree, ask, selectedScenario }) => {
   const kitId = slugify(ask);
@@ -111,6 +474,7 @@ const createPendingKit = ({ worktree, ask, selectedScenario }) => {
   writeJson(path.join(kitDir, "kit.json"), {
     id: kitId,
     name: kitId.split("-").map((part) => part[0].toUpperCase() + part.slice(1)).join(" "),
+    version: "0.1.0",
     status: "under_review",
     purpose: `Handle the selected Askdo scenario: ${selectedScenario.name}.`,
     entry_file: "ENTRY.md",
@@ -118,6 +482,13 @@ const createPendingKit = ({ worktree, ask, selectedScenario }) => {
     mates_file: "MATES.md",
     roles_file: "ROLES.json",
     roster_file: "ROSTER.json",
+    source_root: ".",
+    run_root: "./runs",
+    deliverable_root: "./deliverables",
+    language: {
+      source: "en",
+      deliverable_default: ensureProjectConfig(worktree).language.deliverable_default,
+    },
     approval: {
       required: true,
       risk_level: "normal",
@@ -131,7 +502,19 @@ const createPendingKit = ({ worktree, ask, selectedScenario }) => {
       run_count: 0,
       success_count: 0,
       failure_count: 0,
+      review_failure_count: 0,
+      reuse_count: 0,
+      delivery_count: 0,
+      level_note_count: 0,
       last_run_at: null,
+      last_success_at: null,
+      last_audit_at: null,
+    },
+    quality: {
+      maturity: "draft",
+      last_audit_verdict: null,
+      last_audit_at: null,
+      level_note_count: 0,
     },
   });
 
@@ -181,7 +564,10 @@ flowchart TD
   G --> H{"Review passed?"}
   H -- "No" --> I["Revise result"]
   I --> G
-  H -- "Yes" --> J["Deliver result"]
+  H -- "Yes" --> K{"Useful non-blocking improvements?"}
+  K -- "Yes" --> L["Record level notes"]
+  K -- "No" --> J["Deliver result"]
+  L --> J
 \`\`\`
 `,
   );
@@ -286,12 +672,12 @@ Risk level: normal
     risk_level: "normal",
     expected_result: "Askdo will activate the kit and execute the selected scenario.",
     affected_areas: [
-      `askdo/kits/${kitId}/kit.json`,
-      `askdo/kits/${kitId}/ENTRY.md`,
-      `askdo/kits/${kitId}/FLOW.md`,
-      `askdo/kits/${kitId}/MATES.md`,
-      `askdo/kits/${kitId}/ROLES.json`,
-      `askdo/kits/${kitId}/ROSTER.json`,
+      relativeArtifactPath(worktree, path.join(kitDir, "kit.json")),
+      relativeArtifactPath(worktree, path.join(kitDir, "ENTRY.md")),
+      relativeArtifactPath(worktree, path.join(kitDir, "FLOW.md")),
+      relativeArtifactPath(worktree, path.join(kitDir, "MATES.md")),
+      relativeArtifactPath(worktree, path.join(kitDir, "ROLES.json")),
+      relativeArtifactPath(worktree, path.join(kitDir, "ROSTER.json")),
     ],
     choices: [
       { id: "approve_and_run", label: "Approve and run", effect: "Activate and run the kit." },
@@ -304,7 +690,11 @@ Risk level: normal
     decided_at: null,
   });
 
-  return { kitId, decisionId };
+  return {
+    kitId,
+    decisionId,
+    decisionRequestPath: relativeArtifactPath(worktree, path.join(kitDir, "DECISION_REQUEST.md")),
+  };
 };
 
 const approveKit = ({ worktree, kitId }) => {
@@ -328,7 +718,7 @@ const approveKit = ({ worktree, kitId }) => {
 
 const runKit = ({ worktree, kitId, ask, selectedScenario }) => {
   const runId = `${kitId}-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}`;
-  const runDir = path.join(worktree, "askdo", "runs", runId);
+  const runDir = path.join(runRootFor(worktree), runId);
   ensureDir(runDir);
 
   writeText(
@@ -360,15 +750,20 @@ The OpenCode model should now produce the substantive domain answer inside this 
     kit_id: kitId,
     status: "completed",
     created_at: nowIso(),
-    artifacts: [`askdo/runs/${runId}/RESULT.md`, `askdo/runs/${runId}/RUN_RESULT.json`],
+    artifacts: [
+      relativeArtifactPath(worktree, path.join(runDir, "RESULT.md")),
+      relativeArtifactPath(worktree, path.join(runDir, "RUN_RESULT.json")),
+    ],
   });
 
   const kitPath = path.join(kitDirFor(worktree, kitId), "kit.json");
   const kit = readJson(kitPath);
   if (kit) {
+    const completedAt = nowIso();
     kit.performance.run_count += 1;
     kit.performance.success_count += 1;
-    kit.performance.last_run_at = nowIso();
+    kit.performance.last_run_at = completedAt;
+    kit.performance.last_success_at = completedAt;
     writeJson(kitPath, kit);
   }
 
@@ -380,12 +775,25 @@ export const runAskdoTurn = async ({ input, mode = "ask", context }) => {
   const sessionID = context.sessionID || "default";
   const ctx = { worktree, sessionID };
   const text = cleanInput(input);
+  ensureProjectConfig(worktree);
   const state = loadState(ctx);
 
   if (mode === "reset") {
     const filePath = statePathFor(ctx);
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     return format({ status: "reset", message: "Askdo OpenCode state cleared." });
+  }
+
+  if (mode === "list_kits") {
+    return format(listKits(worktree));
+  }
+
+  if (mode === "audit_kit") {
+    return format(auditKit(worktree, text));
+  }
+
+  if (mode === "internal_workshop") {
+    return format(internalWorkshop(worktree));
   }
 
   if (state?.status === "waiting_for_planning_confirmation") {
@@ -439,7 +847,7 @@ export const runAskdoTurn = async ({ input, mode = "ask", context }) => {
       status: state.status,
       message: "Pending kit generated. Askdo must stop until user decision.",
       kit_id: kit.kitId,
-      decision_request: `askdo/kits/${kit.kitId}/DECISION_REQUEST.md`,
+      decision_request: kit.decisionRequestPath,
       choices: state.pending_decision.choices,
     });
   }
@@ -483,7 +891,10 @@ export const runAskdoTurn = async ({ input, mode = "ask", context }) => {
       message: "Askdo approved and ran the selected kit.",
       kit_id: state.kit_id,
       run_id: run.runId,
-      artifacts: [`askdo/runs/${run.runId}/RESULT.md`, `askdo/runs/${run.runId}/RUN_RESULT.json`],
+      artifacts: [
+        relativeArtifactPath(worktree, path.join(runRootFor(worktree), run.runId, "RESULT.md")),
+        relativeArtifactPath(worktree, path.join(runRootFor(worktree), run.runId, "RUN_RESULT.json")),
+      ],
     });
   }
 

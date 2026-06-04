@@ -43,13 +43,14 @@ askdo/
 `-- runs/
 ```
 
-14. Check existing `askdo/kits/`.
+14. Resolve existing kits through `askdo/config.json`, configured kit roots, and `./askdo/kits`.
 15. Reuse a kit when suitable for the selected scenario.
 16. Build a new kit only when the selected scenario has a reusable business capability boundary.
 17. If a new kit is built, create a choice gate and stop before execution.
 18. If an approved existing kit is selected, start execution from its `ENTRY.md`.
 19. Run or prepare the selected kit flow.
-20. Verify generated outputs and factual claims before delivery.
+20. Use the configured deliverable language for user-facing outputs when available.
+21. Verify generated outputs and factual claims before delivery.
 
 ## Rules
 
@@ -58,6 +59,7 @@ askdo/
 - Escalate unclear boundaries.
 - Do not generate recommended scenario options while the scenario planning basis is still undecided.
 - Do not build or run from the raw ask before scenario selection is complete.
+- Do not assume all user-owned kits live in the current folder.
 - Askdo may propose creative or more ambitious scenarios, but the user chooses the final path.
 - Challenge weak premises and name negative conclusions when evidence supports them.
 - State uncertainty instead of inventing facts, names, dates, numbers, citations, or product behavior.

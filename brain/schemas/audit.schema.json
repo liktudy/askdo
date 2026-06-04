@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Askdo External Kit Audit Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "scope", "target", "verdict", "generated_at", "scores", "blocking_issues", "improvement_notes", "recommended_next_action"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "scope": {
+      "type": "string",
+      "const": "external_kit"
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "language": {
+      "type": "string",
+      "minLength": 2
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "pass_with_level_notes", "revise_before_run", "reject_or_rebuild"]
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "structure": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "boundary": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "flow": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "crew": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "approval": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "output": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "reuse": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "language": { "type": "integer", "minimum": 0, "maximum": 10 }
+      }
+    },
+    "blocking_issues": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "improvement_notes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "recommended_next_action": {
+      "type": "string",
+      "enum": ["approve_and_run", "revise_kit", "record_level_and_run", "reject", "defer_to_backlog", "stop"]
+    },
+    "unknowns": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "priority", "blocking", "summary", "recommendation"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["structure", "boundary", "flow", "crew", "role", "mate", "approval", "permission", "output", "reuse", "overlap", "language", "lifecycle", "internal_consistency"]
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "normal", "high", "critical"]
+        },
+        "blocking": {
+          "type": "boolean"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recommendation": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

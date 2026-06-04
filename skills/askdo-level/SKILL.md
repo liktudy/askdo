@@ -20,6 +20,9 @@ Record:
 - last run date
 - last success date
 - boundary or granularity improvement suggestions
+- last audit verdict
+- last audit date
+- non-blocking level notes from `pass_with_level_notes`
 
 Do not create process logs by default.
 
@@ -28,4 +31,5 @@ Do not create process logs by default.
 - Keep records minimal.
 - Prefer useful kit updates over verbose logs.
 - Escalate if repeated failure suggests kit restructure.
-
+- Do not treat non-blocking improvement notes as review failures.
+- Do not record every audit observation; record only reusable improvement signals.

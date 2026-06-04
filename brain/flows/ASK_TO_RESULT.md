@@ -16,14 +16,15 @@ Convert a user ask into a result through kit reuse, kit build, flow execution, a
 8. Do not generate recommended scenario options until the scenario planning gate is resolved.
 9. Generate 1 to 3 complete scenario options with outcomes, assumptions, planning decisions applied, likely kit path, expected artifacts, risk notes, and closure logic.
 10. Ask the user to choose one scenario before build or execution.
-11. Check existing kits before building a new kit.
+11. Check existing kits through the project registry and configured kit roots before building a new kit.
 12. Reuse a kit when it naturally fits the selected scenario.
 13. Build a new kit only when the selected scenario has a reusable business capability boundary.
 14. Check approval, boundary, and permission requirements.
 15. Run the selected kit flow.
 16. Produce the result.
 17. Verify generated outputs and claims before delivery.
-18. Record meaningful level signals only when they improve reuse, lifecycle, or performance.
+18. Use the configured deliverable language for user-facing output when available.
+19. Record meaningful level signals only when they improve reuse, lifecycle, quality, or performance.
 
 ## Hard Rules
 
@@ -35,3 +36,5 @@ Convert a user ask into a result through kit reuse, kit build, flow execution, a
 - Do not delete user-owned kits.
 - Do not create process logs by default.
 - Do not expose heavy internal organization language in user-facing onboarding.
+- Do not assume kit roots are limited to the current folder.
+- Do not treat `pass_with_level_notes` as audit failure.

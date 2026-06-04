@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "scope": "external_kit",
+  "target": {
+    "id": "<target-id>",
+    "path": "<target-path>"
+  },
+  "language": "en",
+  "verdict": "pass_with_level_notes",
+  "generated_at": "<ISO-8601 timestamp>",
+  "scores": {
+    "structure": 0,
+    "boundary": 0,
+    "flow": 0,
+    "crew": 0,
+    "approval": 0,
+    "output": 0,
+    "reuse": 0,
+    "language": 0
+  },
+  "blocking_issues": [],
+  "improvement_notes": [],
+  "recommended_next_action": "record_level_and_run",
+  "unknowns": []
+}

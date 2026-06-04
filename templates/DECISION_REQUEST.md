@@ -22,7 +22,8 @@ Choose one:
 
 1. `approve_and_run` - Approve this action and continue execution.
 2. `revise_kit` - Do not run yet; revise the kit or plan first.
-3. `reject` - Do not run this action.
+3. `record_level_and_run` - Record non-blocking level notes and continue execution.
+4. `reject` - Do not run this action.
 
 Default safe choice: `revise_kit`
 

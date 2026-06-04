@@ -1,6 +1,7 @@
 {
   "id": "<kit-name>",
   "name": "<Kit Name>",
+  "version": "0.1.0",
   "status": "under_review",
   "purpose": "<kit purpose>",
   "entry_file": "ENTRY.md",
@@ -8,6 +9,13 @@
   "mates_file": "MATES.md",
   "roles_file": "ROLES.json",
   "roster_file": "ROSTER.json",
+  "source_root": ".",
+  "run_root": "./runs",
+  "deliverable_root": "./deliverables",
+  "language": {
+    "source": "en",
+    "deliverable_default": "en"
+  },
   "approval": {
     "required": true,
     "risk_level": "normal"
@@ -21,6 +29,18 @@
     "run_count": 0,
     "success_count": 0,
     "failure_count": 0,
-    "last_run_at": null
+    "review_failure_count": 0,
+    "reuse_count": 0,
+    "delivery_count": 0,
+    "level_note_count": 0,
+    "last_run_at": null,
+    "last_success_at": null,
+    "last_audit_at": null
+  },
+  "quality": {
+    "maturity": "draft",
+    "last_audit_verdict": null,
+    "last_audit_at": null,
+    "level_note_count": 0
   }
 }

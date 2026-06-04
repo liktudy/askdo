@@ -54,6 +54,17 @@ Host Agent Tool
           -> record level signal
 ```
 
+Quality and asset loop:
+
+```text
+config registry
+  -> list kits
+    -> rule check
+      -> kit audit
+        -> pass | pass_with_level_notes | revise_before_run | reject_or_rebuild
+          -> level notes or revision gate
+```
+
 Host tools may include Codex, Claude Code, Cursor, OpenCode, or other agent tools.
 
 ## Directory Model
@@ -82,10 +93,12 @@ askdo/
 `-- runs/
 ```
 
+`askdo/config.json` is the project registry. It may point to kit, run, and deliverable roots outside the current project when the user owns those locations.
+
 Minimal kit:
 
 ```text
-kits/<kit-name>/
+<kit-root>/<kit-name>/
 |-- kit.json
 |-- ENTRY.md
 |-- FLOW.md
@@ -97,7 +110,7 @@ kits/<kit-name>/
 Standard kit:
 
 ```text
-kits/<kit-name>/
+<kit-root>/<kit-name>/
 |-- kit.json
 |-- ENTRY.md
 |-- FLOW.md
@@ -108,6 +121,45 @@ kits/<kit-name>/
 |-- adapters/
 `-- runs/
 ```
+
+## Quality And Asset Governance
+
+Askdo uses two quality systems.
+
+External kit quality reviews user-owned kits. It may be exposed as a public Askdo capability. It includes rule checks, multi-dimensional kit audit, audit verdicts, quality scorecards, and level notes.
+
+Internal Askdo quality reviews Askdo itself: `brain/`, `skills/`, `templates/`, `platforms/`, docs, rules, schemas, and product language. It is keyword-triggered maintenance and should not appear as normal public onboarding.
+
+External kit audit verdicts:
+
+```text
+pass
+pass_with_level_notes
+revise_before_run
+reject_or_rebuild
+```
+
+A kit that passes with level notes can run after user approval, while non-blocking improvements are recorded for future reuse and lifecycle improvement.
+
+Capability exposure levels:
+
+```text
+public
+internal_keyword_only
+maintenance
+```
+
+## Language Policy
+
+Askdo separates internal source language from user-facing output language.
+
+- Internal source-of-truth files are written in English.
+- Machine-readable schema keys, enum values, filenames, and control states remain English.
+- Generated kit source defaults to English.
+- User-facing kit narrative, run outputs, and external deliverables follow `askdo/config.json` language settings when configured.
+- Delivery processing may translate or format results but must not change source conclusions.
+
+If output language is unspecified, Askdo may ask the user, use the host conversation language, or default to English.
 
 ## Crew Model
 
@@ -196,7 +248,7 @@ After user approval, Askdo may set the kit to `active` and `build_approval.statu
 Each single-kit run starts from:
 
 ```text
-kits/<kit-name>/ENTRY.md
+<kit-root>/<kit-name>/ENTRY.md
 ```
 
 `ENTRY.md` is the user-facing run doorway. It checks whether the kit is approved, active, in-boundary, and safe to run.
@@ -226,6 +278,13 @@ Askdo source of truth:
 - `skills/`
 - `templates/`
 - `platforms/`
+- `askdo/config.json`
+- `askdo/kits/*/kit.json`
+- `askdo/kits/*/ENTRY.md`
+- `askdo/kits/*/FLOW.md`
+- `askdo/kits/*/MATES.md`
+- `askdo/kits/*/ROLES.json`
+- `askdo/kits/*/ROSTER.json`
 - `kits/*/kit.json`
 - `kits/*/ENTRY.md`
 - `kits/*/FLOW.md`

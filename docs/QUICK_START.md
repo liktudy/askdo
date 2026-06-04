@@ -26,11 +26,12 @@ Askdo should:
 4. generate 1 to 3 complete scenario options only after the scenario planning gate is resolved
 5. wait for the user to choose one scenario
 6. create `askdo/config.json` in the current project if missing
-7. check existing `askdo/kits/`
+7. check existing kit roots from `askdo/config.json`
 8. reuse a kit when suitable
 9. build a new kit only when needed
 10. run or prepare the kit flow
 11. produce the result
+12. record meaningful level notes only when they improve reuse or quality
 
 ## 3. Generated Project Assets
 
@@ -42,9 +43,30 @@ askdo/
 |-- kits/
 |   `-- market-research/
 |       |-- kit.json
+|       |-- ENTRY.md
 |       |-- FLOW.md
-|       `-- MATES.md
+|       |-- MATES.md
+|       |-- ROLES.json
+|       `-- ROSTER.json
 `-- runs/
+```
+
+`askdo/config.json` may also point to kit, run, and deliverable roots outside the current folder:
+
+```json
+{
+  "asset_roots": {
+    "kits": ["./askdo/kits"],
+    "runs": ["./askdo/runs"],
+    "deliverables": ["./askdo/deliverables"]
+  },
+  "language": {
+    "internal_source": "en",
+    "kit_source_default": "en",
+    "deliverable_default": "en",
+    "ask_when_unspecified": true
+  }
+}
 ```
 
 ## 4. Run An Existing Kit
@@ -70,7 +92,40 @@ Checks should validate:
 - boundary requirements
 - missing source files
 
-## 6. Preserve User Assets
+## 6. List Kits
+
+```text
+Use Askdo to list all kits.
+```
+
+Askdo should read the project registry, inspect configured kit roots, and show kit id, name, status, approval status, last run date, quality status, and source root.
+
+## 7. Audit A Kit
+
+```text
+Use Askdo to audit kit market-research.
+```
+
+External kit audit returns one of:
+
+```text
+pass
+pass_with_level_notes
+revise_before_run
+reject_or_rebuild
+```
+
+Non-blocking improvements should become level notes rather than audit failures.
+
+## 8. Internal Askdo Workshop
+
+```text
+Run an Askdo internal workshop.
+```
+
+This reviews Askdo itself, not a user kit. It is keyword-triggered maintenance and should not be shown as ordinary public onboarding.
+
+## 9. Preserve User Assets
 
 Uninstalling Askdo must not delete kits.
 

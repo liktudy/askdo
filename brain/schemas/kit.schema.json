@@ -13,6 +13,10 @@
       "type": "string",
       "minLength": 1
     },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
     "status": {
       "type": "string",
       "enum": ["active", "paused", "under_review", "merge_candidate", "closure_candidate", "closed", "archived"]
@@ -40,6 +44,23 @@
     "roster_file": {
       "type": "string",
       "const": "ROSTER.json"
+    },
+    "source_root": {
+      "type": "string"
+    },
+    "run_root": {
+      "type": "string"
+    },
+    "deliverable_root": {
+      "type": "string"
+    },
+    "language": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string", "minLength": 2 },
+        "deliverable_default": { "type": "string", "minLength": 2 }
+      }
     },
     "approval": {
       "type": "object",
@@ -74,7 +95,29 @@
         "run_count": { "type": "integer", "minimum": 0 },
         "success_count": { "type": "integer", "minimum": 0 },
         "failure_count": { "type": "integer", "minimum": 0 },
-        "last_run_at": { "type": ["string", "null"], "format": "date-time" }
+        "review_failure_count": { "type": "integer", "minimum": 0 },
+        "reuse_count": { "type": "integer", "minimum": 0 },
+        "delivery_count": { "type": "integer", "minimum": 0 },
+        "level_note_count": { "type": "integer", "minimum": 0 },
+        "last_run_at": { "type": ["string", "null"], "format": "date-time" },
+        "last_success_at": { "type": ["string", "null"], "format": "date-time" },
+        "last_audit_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "maturity": {
+          "type": "string",
+          "enum": ["draft", "reviewed", "active", "stable", "mature", "needs_refactor"]
+        },
+        "last_audit_verdict": {
+          "type": ["string", "null"],
+          "enum": ["pass", "pass_with_level_notes", "revise_before_run", "reject_or_rebuild", null]
+        },
+        "last_audit_at": { "type": ["string", "null"], "format": "date-time" },
+        "level_note_count": { "type": "integer", "minimum": 0 }
       }
     }
   }

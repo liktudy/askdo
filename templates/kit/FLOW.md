@@ -30,7 +30,10 @@ flowchart TD
   M --> N{"Review passed?"}
   N -- "No" --> O["Revise result or flow"]
   O --> M
-  N -- "Yes" --> P["Deliver result"]
+  N -- "Yes" --> R{"Useful non-blocking improvements?"}
+  R -- "Yes" --> S["Record level notes"]
+  R -- "No" --> P["Deliver result"]
+  S --> P
   P --> Q["Record meaningful level signals"]
 ```
 
@@ -46,8 +49,9 @@ flowchart TD
 8. Execute the work.
 9. Review the result for correctness, boundary fit, and usefulness.
 10. If review fails, revise the plan, role assignment, result, or flow before delivery.
-11. Return the result.
-12. Record only meaningful level signals.
+11. If review passes with useful non-blocking improvements, record level notes without failing the run.
+12. Return the result in the configured deliverable language when available.
+13. Record only meaningful level signals.
 
 ## Output
 

@@ -10,30 +10,32 @@ Use this skill when no existing kit can naturally handle the user ask.
 ## Required Outputs
 
 ```text
-askdo/kits/<kit-name>/kit.json
-askdo/kits/<kit-name>/ENTRY.md
-askdo/kits/<kit-name>/FLOW.md
-askdo/kits/<kit-name>/MATES.md
-askdo/kits/<kit-name>/ROLES.json
-askdo/kits/<kit-name>/ROSTER.json
+<configured-kit-root>/<kit-name>/kit.json
+<configured-kit-root>/<kit-name>/ENTRY.md
+<configured-kit-root>/<kit-name>/FLOW.md
+<configured-kit-root>/<kit-name>/MATES.md
+<configured-kit-root>/<kit-name>/ROLES.json
+<configured-kit-root>/<kit-name>/ROSTER.json
 ```
 
 ## Steps
 
-1. Check existing kits first.
-2. Choose a short kebab-case kit name.
-3. Define the kit purpose and boundary.
-4. Create `kit.json` using `brain/schemas/kit.schema.json`.
-5. Set new kits to `under_review` with `build_approval.status` as `pending`.
-6. Create `ENTRY.md` as the single run entry for this kit.
-7. Create `FLOW.md` with a flow map, decision gates, rejection paths, assignment mapping, review, output, and failure handling.
-8. Create `ROLES.json` with one crew, stable roles, role archetypes, scenario bindings, default permissions, and acceptance checks.
-9. Create `ROSTER.json` with concrete mates assigned to roles.
-10. Create `MATES.md` as a human-readable operating contract summary that points to `ROLES.json` and `ROSTER.json`.
-11. Do not create extra crews, roles, mates, templates, or future workflows by default.
-12. Create a choice gate before execution.
-13. Write `DECISION_REQUEST.md` and `DECISION_REQUEST.json` or render the same choices through an adapter.
-14. Stop until the user chooses approve, revise, or reject.
+1. Read `askdo/config.json` and resolve configured kit roots.
+2. Check existing kits first through the registry.
+3. Choose a short kebab-case kit name.
+4. Define the kit purpose and boundary.
+5. Create `kit.json` using `brain/schemas/kit.schema.json`.
+6. Set new kits to `under_review` with `build_approval.status` as `pending`.
+7. Create `ENTRY.md` as the single run entry for this kit.
+8. Create `FLOW.md` with a flow map, decision gates, rejection paths, assignment mapping, review, output, and failure handling.
+9. Create `ROLES.json` with one crew, stable roles, role archetypes, scenario bindings, default permissions, and acceptance checks.
+10. Create `ROSTER.json` with concrete mates assigned to roles.
+11. Create `MATES.md` as a human-readable operating contract summary that points to `ROLES.json` and `ROSTER.json`.
+12. Apply language config: machine-readable controls stay English; user-facing narrative follows configured defaults when appropriate.
+13. Do not create extra crews, roles, mates, templates, or future workflows by default.
+14. Create a choice gate before execution.
+15. Write `DECISION_REQUEST.md` and `DECISION_REQUEST.json` or render the same choices through an adapter.
+16. Stop until the user chooses approve, revise, or reject.
 
 ## Role And Mate Rules
 
@@ -60,7 +62,7 @@ Write `DECISION_REQUEST.md` and `DECISION_REQUEST.json` beside the pending kit, 
 ## Minimal Kit
 
 ```text
-askdo/kits/<kit-name>/
+<configured-kit-root>/<kit-name>/
 |-- kit.json
 |-- ENTRY.md
 |-- FLOW.md

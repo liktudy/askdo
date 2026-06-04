@@ -30,6 +30,12 @@ A user-owned reusable business capability pack.
 
 A kit is not an installed Askdo skill. It is generated or maintained by the user through Askdo.
 
+## Registry
+
+The project config and asset roots used to find user-owned kits, runs, and deliverables.
+
+The registry may point to assets inside or outside the current folder.
+
 ## Flow
 
 The multi-agent business workflow inside a kit.
@@ -87,3 +93,40 @@ The useful output returned to the user.
 ## Level
 
 Meaningful feedback used to improve kit granularity, precision, reuse, lifecycle, or performance.
+
+## Audit
+
+A structured quality review.
+
+External kit audit reviews user-owned kits. Internal Askdo audit reviews Askdo itself and is keyword-triggered maintenance.
+
+## Audit Verdict
+
+The result of a kit quality review.
+
+Supported external kit verdicts are:
+
+```text
+pass
+pass_with_level_notes
+revise_before_run
+reject_or_rebuild
+```
+
+## Level Note
+
+A non-blocking improvement signal.
+
+Level notes are saved only when they improve future reuse, quality, lifecycle decisions, or performance. They are not process logs.
+
+## Internal Workshop
+
+A keyword-triggered review of Askdo itself.
+
+It focuses on Askdo source-of-truth consistency, rules, flows, schemas, skills, templates, platform adapters, and product language.
+
+## Deliverable Language
+
+The configured language for user-facing run outputs and external deliverables.
+
+Internal source files and machine-readable control fields stay in English.
