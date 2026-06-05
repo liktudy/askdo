@@ -4,3 +4,9 @@ outputs/
 *.tmp
 *.log
 
+# Local user-owned Askdo assets. Existing tracked legacy assets require an
+# explicit migration before they disappear from git.
+askdo/config.json
+askdo/kits/
+askdo/deliverables/
+askdo/.state/

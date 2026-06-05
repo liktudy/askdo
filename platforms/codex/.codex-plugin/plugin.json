@@ -1,6 +1,6 @@
 {
   "name": "askdo",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Askdo turns a user ask into a reusable business kit and executable multi-agent flow.",
   "entry": "../../AGENTS.md",
   "skills": [

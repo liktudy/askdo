@@ -45,7 +45,7 @@ const format = (payload) => JSON.stringify(payload, null, 2);
 
 const defaultProjectConfig = {
   product: "Askdo",
-  version: "0.1.3",
+  version: "0.1.4",
   kits_dir: "./askdo/kits",
   runs_dir: "./askdo/runs",
   asset_roots: {

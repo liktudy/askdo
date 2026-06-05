@@ -1,12 +1,18 @@
 {
   "product": "Askdo",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "kits_dir": "./askdo/kits",
   "runs_dir": "./askdo/runs",
   "asset_roots": {
-    "kits": ["./askdo/kits"],
-    "runs": ["./askdo/runs"],
-    "deliverables": ["./askdo/deliverables"]
+    "kits": [
+      "./askdo/kits"
+    ],
+    "runs": [
+      "./askdo/runs"
+    ],
+    "deliverables": [
+      "./askdo/deliverables"
+    ]
   },
   "language": {
     "internal_source": "en",
@@ -15,8 +21,18 @@
     "ask_when_unspecified": true
   },
   "capability_exposure": {
-    "public": ["askdo-intake", "askdo-list-kits", "askdo-check", "askdo-build-kit", "askdo-run-kit", "askdo-audit-kit", "askdo-level"],
-    "internal_keyword_only": ["askdo-internal-workshop"],
+    "public": [
+      "askdo-intake",
+      "askdo-list-kits",
+      "askdo-check",
+      "askdo-build-kit",
+      "askdo-run-kit",
+      "askdo-audit-kit",
+      "askdo-level"
+    ],
+    "internal_keyword_only": [
+      "askdo-internal-workshop"
+    ],
     "maintenance": []
   },
   "ownership": "user-managed",

@@ -106,3 +106,15 @@ Each kit has a single execution entry:
 ## Asset Ownership
 
 Kits are user-owned business assets. Installing, upgrading, or uninstalling Askdo must not delete generated kits unless the user explicitly requests a destructive purge.
+
+## Engineering
+
+Askdo uses lightweight product scripts for checks, manifest sync, and release versioning:
+
+```text
+npm run check
+npm run release:patch
+npm run manifests:generate
+```
+
+See `docs/ENGINEERING.md`.

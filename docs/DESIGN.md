@@ -267,7 +267,7 @@ For Codex, an adapter may render the gate like a command approval prompt when th
 
 ## Source Of Truth
 
-Askdo source of truth:
+Askdo product source of truth:
 
 - `AGENTS.md`
 - `docs/`
@@ -278,13 +278,6 @@ Askdo source of truth:
 - `skills/`
 - `templates/`
 - `platforms/`
-- `askdo/config.json`
-- `askdo/kits/*/kit.json`
-- `askdo/kits/*/ENTRY.md`
-- `askdo/kits/*/FLOW.md`
-- `askdo/kits/*/MATES.md`
-- `askdo/kits/*/ROLES.json`
-- `askdo/kits/*/ROSTER.json`
 - `kits/*/kit.json`
 - `kits/*/ENTRY.md`
 - `kits/*/FLOW.md`
@@ -292,7 +285,22 @@ Askdo source of truth:
 - `kits/*/ROLES.json`
 - `kits/*/ROSTER.json`
 
-Adapters and runtime output are not source of truth.
+User asset source of truth:
+
+- `askdo/config.json`
+- configured kit roots
+- configured run roots
+- configured deliverable roots
+- `askdo/kits/*/kit.json`
+- `askdo/kits/*/ENTRY.md`
+- `askdo/kits/*/FLOW.md`
+- `askdo/kits/*/MATES.md`
+- `askdo/kits/*/ROLES.json`
+- `askdo/kits/*/ROSTER.json`
+
+User assets are source of truth for the owning project or kit. They are not Askdo product source, and internal Askdo quality review must not audit or mutate them unless the user explicitly expands the scope.
+
+Runtime output is not product source of truth.
 
 ## Execution Model
 

@@ -149,9 +149,34 @@ Public skills may be shown to users. Internal keyword-only skills should not app
 
 - add kit maturity
 - add diff audit
-- add versioning
+- add kit lifecycle versioning
 - add overlap detection
 - add evolution decision workflows
+
+## Product Engineering Update Track
+
+This track records product-code improvements decided after reviewing gstack and Superpowers-style strengths. It complements the quality governance plan without changing the plugin-first user entry.
+
+### P0
+
+- add no-dependency product checks
+- add manifest sync checks
+- add product release version checks
+- add user asset boundary checks
+
+### P1
+
+- introduce TypeScript as the product-code source for Askdo runtime and adapter logic
+- keep generated JavaScript or distributable runtime files available so an installed plugin works immediately after download
+- avoid new runtime dependencies unless a specific capability cannot be implemented safely without them
+- preserve the current plugin-first experience and do not require users to run local scripts to start Askdo
+
+### P2
+
+- add precise extension surfaces for real Askdo lifecycle points instead of broad generic hooks
+- cover registry resolution, scenario planning gates, kit audit, internal workshop, result delivery, and level recording
+- keep extension contracts typed and minimal
+- keep internal maintenance capabilities keyword-triggered while public capabilities remain discoverable
 
 ## V1 Scope
 
@@ -165,3 +190,17 @@ Kit Registry
 ```
 
 Full kit evolution should remain a later capability until Askdo has enough real usage signals.
+
+## Engineering Automation
+
+Askdo product source changes should be checked and released through product scripts:
+
+```text
+npm run check
+npm run release:patch
+npm run manifests:generate
+```
+
+User-owned assets under configured asset roots do not require product version bumps. Product source changes do.
+
+Product release versioning and kit lifecycle versioning are separate systems. Product releases use package and plugin manifest versions. Kit lifecycle versioning belongs to kit evolution and should be based on meaningful kit changes, audits, and reuse signals.

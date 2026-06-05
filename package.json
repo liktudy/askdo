@@ -1,9 +1,22 @@
 {
   "name": "askdo",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
   "description": "Askdo turns a user ask into a reusable business kit and executable multi-agent flow.",
   "main": "platforms/opencode/.opencode/plugins/askdo.js",
+  "scripts": {
+    "check": "node scripts/check.js",
+    "check:json": "node scripts/check-json.js",
+    "check:assets": "node scripts/check-assets.js",
+    "check:assets:strict": "node scripts/check-assets.js --strict",
+    "check:version": "node scripts/check-version-bump.js",
+    "manifests:generate": "node scripts/generate-manifests.js",
+    "manifests:check": "node scripts/generate-manifests.js --check",
+    "release:patch": "node scripts/release-version.js patch",
+    "release:minor": "node scripts/release-version.js minor",
+    "release:major": "node scripts/release-version.js major",
+    "smoke:opencode": "node scripts/smoke-opencode.js"
+  },
   "keywords": [
     "opencode-plugin",
     "business",

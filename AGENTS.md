@@ -2,11 +2,12 @@
 
 Askdo is an AI-native business multi-agent execution product.
 
-Use these files as the source of truth:
+Use these Askdo product files as the source of truth:
 
 - `README.md`
 - `docs/DESIGN.md`
 - `docs/QUALITY_AND_ASSET_GOVERNANCE.md`
+- `docs/ENGINEERING.md`
 - `docs/QUICK_START.md`
 - `docs/GLOSSARY.md`
 - `brain/rules/`
@@ -16,6 +17,16 @@ Use these files as the source of truth:
 - `skills/`
 - `templates/`
 - `platforms/`
+- `scripts/`
+- `kits/*/kit.json`
+- `kits/*/ENTRY.md`
+- `kits/*/FLOW.md`
+- `kits/*/MATES.md`
+- `kits/*/ROLES.json`
+- `kits/*/ROSTER.json`
+
+Treat these as user-owned project assets. They are source of truth for the owning project or kit, not for Askdo product source:
+
 - `askdo/config.json`
 - `askdo/kits/*/kit.json`
 - `askdo/kits/*/ENTRY.md`
@@ -23,12 +34,6 @@ Use these files as the source of truth:
 - `askdo/kits/*/MATES.md`
 - `askdo/kits/*/ROLES.json`
 - `askdo/kits/*/ROSTER.json`
-- `kits/*/kit.json`
-- `kits/*/ENTRY.md`
-- `kits/*/FLOW.md`
-- `kits/*/MATES.md`
-- `kits/*/ROLES.json`
-- `kits/*/ROSTER.json`
 
 ## Iron Rules
 
