@@ -1,6 +1,6 @@
 {
   "product": "Askdo",
-  "version": "0.1",
+  "version": "0.1.3",
   "kits_dir": "./askdo/kits",
   "runs_dir": "./askdo/runs",
   "asset_roots": {
