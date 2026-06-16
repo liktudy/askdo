@@ -11,7 +11,9 @@
 
 ## P0 Iron Rules
 
-- The user has final decision authority.
+- Askdo product source and generated user-owned kits have separate authority domains.
+- Askdo product-source changes belong to the product maintainer.
+- Generated kit, run, deliverable, and lifecycle decisions belong to the kit owner or run decision-maker.
 - Boundary ambiguity must be escalated.
 - High-risk execution requires approval.
 - User-owned kits must not be deleted by default.
@@ -35,13 +37,14 @@
 - Single-kit execution must start from `ENTRY.md`.
 - Generated `MATES.md` files must define crew, role, mate, and assignment boundaries.
 - Generated roles must be stable responsibility seats with one or more mates.
+- Generated roles must define context contracts with inputs, exclusions, return packets, and memory-write rules.
 - Shared roles must use role archetypes and scenario bindings instead of duplicated role definitions.
 - Generated mates must be concrete workers under roles, not broad phase buckets.
 - Generated mate roster changes must be made in `ROSTER.json` unless the operating contract changes.
 - Generated mates must have one primary responsibility inside their role.
 - Generated roles and mates must use the lowest viable permission.
 - Agents may propose creative alternatives within their boundaries.
-- Agents must keep creativity tied to feasibility, evidence, and user authority.
+- Agents must keep creativity tied to feasibility, evidence, and the relevant authority domain.
 - Kit formal artifacts are limited to Markdown, CSV, and JSON.
 - External deliverables are produced through delivery processing.
 - Machine-readable schema keys, enum values, filenames, and control states must remain English.
@@ -49,7 +52,7 @@
 - Askdo must distinguish external user kit quality from internal Askdo project quality.
 - External kit audit must classify verdicts as `pass`, `pass_with_level_notes`, `revise_before_run`, or `reject_or_rebuild`.
 - Non-blocking kit improvements must become level notes instead of audit failures.
-- Internal Askdo self review must be keyword-triggered maintenance.
+- Internal Askdo self review must be product-maintainer-triggered maintenance.
 
 ## P2 Recommended Practices
 

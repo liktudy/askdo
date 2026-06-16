@@ -71,9 +71,10 @@ Quality modes are also available through the same tool:
 mode=list_kits
 mode=audit_kit input=<kit id or name>
 mode=internal_workshop
+mode=evolve
 ```
 
-These modes are read-only by default. `internal_workshop` reviews Askdo itself and should be used only when the user explicitly asks for internal review.
+These modes are read-only by default. `internal_workshop` reviews Askdo itself and `evolve` runs product evolution; both should be used only when the product maintainer explicitly asks for internal review or evolution.
 
 The tool persists per-session state under:
 

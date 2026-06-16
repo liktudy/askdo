@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "scope": "askdo_product_evolution",
+  "target": {
+    "id": "askdo",
+    "path": "."
+  },
+  "generated_at": "<ISO-8601 timestamp>",
+  "signals": [],
+  "candidates": [],
+  "actions_taken": [],
+  "decisions_required": [],
+  "learning_records": [],
+  "verification": [],
+  "recommended_next_action": "record_learning_only"
+}

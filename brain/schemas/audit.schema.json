@@ -45,6 +45,7 @@
         "approval": { "type": "integer", "minimum": 0, "maximum": 10 },
         "output": { "type": "integer", "minimum": 0, "maximum": 10 },
         "reuse": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "context_contract": { "type": "integer", "minimum": 0, "maximum": 10 },
         "language": { "type": "integer", "minimum": 0, "maximum": 10 }
       }
     },
@@ -69,7 +70,7 @@
     "finding": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "type", "priority", "blocking", "summary", "recommendation"],
+      "required": ["id", "type", "priority", "blocking", "summary", "recommendation", "current_loop_action"],
       "properties": {
         "id": {
           "type": "string",
@@ -77,7 +78,7 @@
         },
         "type": {
           "type": "string",
-          "enum": ["structure", "boundary", "flow", "crew", "role", "mate", "approval", "permission", "output", "reuse", "overlap", "language", "lifecycle", "internal_consistency"]
+          "enum": ["structure", "boundary", "flow", "crew", "role", "mate", "context_contract", "approval", "permission", "output", "reuse", "overlap", "language", "lifecycle", "internal_consistency"]
         },
         "priority": {
           "type": "string",
@@ -91,6 +92,14 @@
           "minLength": 1
         },
         "recommendation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "current_loop_action": {
+          "type": "string",
+          "enum": ["revise_now", "ask_user", "record_level_note", "reject_note"]
+        },
+        "next_trigger": {
           "type": "string",
           "minLength": 1
         }

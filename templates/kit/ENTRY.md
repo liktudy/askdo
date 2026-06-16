@@ -10,6 +10,24 @@ use askdo kit <kit-name>: <concrete ask>
 
 <kit purpose>
 
+## Mission
+
+Why this kit exists:
+
+<concrete business reason this kit exists>
+
+Success looks like:
+
+- <observable successful outcome>
+
+Constraints:
+
+- <time, risk, input, permission, or format constraint>
+
+Out of scope:
+
+- <adjacent work this kit should not take on>
+
 ## Run Gate
 
 This kit can run only when:

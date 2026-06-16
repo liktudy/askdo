@@ -4,6 +4,18 @@
   "version": "0.1.0",
   "status": "under_review",
   "purpose": "<kit purpose>",
+  "mission": {
+    "why": "<concrete business reason this kit exists>",
+    "success_looks_like": [
+      "<observable successful outcome>"
+    ],
+    "constraints": [
+      "<time, risk, input, permission, or format constraint>"
+    ],
+    "out_of_scope": [
+      "<adjacent work this kit should not take on>"
+    ]
+  },
   "entry_file": "ENTRY.md",
   "flow_file": "FLOW.md",
   "mates_file": "MATES.md",

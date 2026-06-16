@@ -31,6 +31,7 @@ Review dimensions include:
 - flow
 - crew
 - roles and mates
+- context contracts
 - approvals and permissions
 - output usefulness
 - reuse and overlap
@@ -45,7 +46,7 @@ External audit issues must be classified as:
 - structural evolution candidate
 - user preference decision
 
-Blocking issues require revision before run. Non-blocking notes may be recorded and the kit may still run if the user approves.
+Blocking issues require revision before run. Non-blocking notes may be recorded and the kit may still run if the user approves, but recording is not a deferral bucket: each note must state whether it is applied now, attached to the current approval choice, or queued for the next named review, run, or audit trigger.
 
 ### Choice Gate
 
@@ -62,7 +63,7 @@ Recommended choices:
 
 Internal quality reviews Askdo itself.
 
-It is keyword-triggered maintenance, not a normal public kit capability.
+It is product-maintainer-triggered maintenance, not a normal public kit capability.
 
 Internal review may inspect:
 
@@ -76,10 +77,23 @@ Internal review may inspect:
 - product language
 - public/internal capability exposure
 
-Internal review must not directly make structural changes unless the user explicitly approves them.
+Internal review must not directly make structural Askdo product-source changes unless the product maintainer explicitly approves them.
 
 ## Level Notes
 
 Level notes record only meaningful reusable improvements.
 
-They should not become process logs. Prefer concise recommendations that improve future reuse, quality, boundaries, or lifecycle decisions.
+They should not become process logs. Prefer concise recommendations that improve reuse, quality, boundaries, or lifecycle decisions in the current loop or at the next explicit trigger.
+
+## Current-Loop Improvement
+
+Every audit or quality pass must leave the kit state better than it found it, unless the user rejects the improvement or approval boundaries block mutation.
+
+Allowed current-loop actions are:
+
+- revise now when the improvement is safe, in scope, and approved
+- ask the authorized decision-maker to decide when the improvement changes boundary, risk, ownership, or structure
+- record a concrete level note with the next trigger when the kit can run but the improvement should be consumed later
+- reject the note when it is noisy, speculative, or not reusable
+
+Do not produce an optimization plan without changing the active artifact, decision request, audit report, or level record.

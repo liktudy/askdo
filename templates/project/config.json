@@ -1,6 +1,6 @@
 {
   "product": "Askdo",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "kits_dir": "./askdo/kits",
   "runs_dir": "./askdo/runs",
   "asset_roots": {
@@ -31,7 +31,8 @@
       "askdo-level"
     ],
     "internal_keyword_only": [
-      "askdo-internal-workshop"
+      "askdo-internal-workshop",
+      "askdo-evolve"
     ],
     "maintenance": []
   },

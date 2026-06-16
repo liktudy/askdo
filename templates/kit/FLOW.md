@@ -20,7 +20,8 @@ flowchart TD
   D -- "No" --> E["Refuse, clarify, or propose a new kit"]
   D -- "Yes" --> F["Map scenario and assignments"]
   F --> G["Assign mates from ROSTER.json through roles in ROLES.json"]
-  G --> H{"Risk or permission expansion needed?"}
+  G --> X["Prepare role-specific context contracts"]
+  X --> H{"Risk or permission expansion needed?"}
   H -- "Yes" --> I["Request approval"]
   I --> J{"Approved?"}
   J -- "No" --> K["Revise plan or stop"]
@@ -31,7 +32,7 @@ flowchart TD
   N -- "No" --> O["Revise result or flow"]
   O --> M
   N -- "Yes" --> R{"Useful non-blocking improvements?"}
-  R -- "Yes" --> S["Record level notes"]
+  R -- "Yes" --> S["Apply now or record level notes with next trigger"]
   R -- "No" --> P["Deliver result"]
   S --> P
   P --> Q["Record meaningful level signals"]
@@ -45,13 +46,14 @@ flowchart TD
 4. Map the ask to a scenario and run assignments.
 5. Resolve roles from `ROLES.json`.
 6. Select concrete mates from `ROSTER.json`.
-7. Request approval for risk, permission expansion, or boundary expansion.
-8. Execute the work.
-9. Review the result for correctness, boundary fit, and usefulness.
-10. If review fails, revise the plan, role assignment, result, or flow before delivery.
-11. If review passes with useful non-blocking improvements, record level notes without failing the run.
-12. Return the result in the configured deliverable language when available.
-13. Record only meaningful level signals.
+7. Prepare only the inputs allowed by each role's context contract.
+8. Request approval for risk, permission expansion, or boundary expansion.
+9. Execute the work.
+10. Review the result for correctness, boundary fit, and usefulness.
+11. If review fails, revise the plan, role assignment, result, or flow before delivery.
+12. If review passes with useful non-blocking improvements, apply safe approved improvements now or record level notes with the next trigger without failing the run.
+13. Return the result in the configured deliverable language when available.
+14. Record only meaningful level signals.
 
 ## Output
 

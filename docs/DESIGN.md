@@ -4,17 +4,22 @@ Version: 0.1
 
 Owner: Askdo product and system design
 
-Status: initial product scaffold
+Status: active product model
 
 ## Goal
 
-Askdo turns a user ask into a complete user-selected scenario, then into a reusable business capability and an executable multi-agent flow.
+Askdo turns a user ask into a complete user-selected scenario, then into a reusable business capability loop and an executable multi-agent flow.
 
 ```text
 ask -> refine -> scenario -> build -> flow -> run -> result -> level
 ```
 
-The user should not need to understand organization architecture. Askdo hides the internal governance model behind simple product terms.
+Kit users should not need to understand organization architecture. Askdo hides the internal governance model behind simple product terms.
+
+Askdo separates authority domains:
+
+- product maintainer authority for Askdo product source, platform adapters, rules, schemas, templates, skills, and release evolution
+- kit owner authority for generated kits, runs, deliverables, approvals, and user-owned assets
 
 ## Audience
 
@@ -32,6 +37,7 @@ Askdo is:
 - a kit builder and runner
 - a user-owned asset manager
 - a disciplined execution loop
+- a mission-anchored improvement loop
 
 Askdo is not:
 
@@ -51,7 +57,7 @@ Host Agent Tool
     -> build or reuse kit
       -> run flow
         -> produce result
-          -> record level signal
+          -> apply or record level signal
 ```
 
 Quality and asset loop:
@@ -107,6 +113,8 @@ Minimal kit:
 `-- ROSTER.json
 ```
 
+Every kit carries a mission: why the kit exists, observable success, constraints, and out-of-scope work. Askdo uses the mission to prevent audits and level notes from drifting into unnecessary complexity.
+
 Standard kit:
 
 ```text
@@ -128,7 +136,7 @@ Askdo uses two quality systems.
 
 External kit quality reviews user-owned kits. It may be exposed as a public Askdo capability. It includes rule checks, multi-dimensional kit audit, audit verdicts, quality scorecards, and level notes.
 
-Internal Askdo quality reviews Askdo itself: `brain/`, `skills/`, `templates/`, `platforms/`, docs, rules, schemas, and product language. It is keyword-triggered maintenance and should not appear as normal public onboarding.
+Internal Askdo quality reviews Askdo itself: `brain/`, `skills/`, `templates/`, `platforms/`, docs, rules, schemas, and product language. It is product-maintainer-triggered maintenance and should not appear as normal public onboarding.
 
 External kit audit verdicts:
 
@@ -139,7 +147,7 @@ revise_before_run
 reject_or_rebuild
 ```
 
-A kit that passes with level notes can run after user approval, while non-blocking improvements are recorded for future reuse and lifecycle improvement.
+A kit that passes with level notes can run after user approval, while non-blocking improvements are applied now when safe or recorded with evidence, implication, and the next review, run, audit, or user decision trigger.
 
 Capability exposure levels:
 
@@ -176,7 +184,8 @@ kit
 ```
 
 - A `crew` is a cooperating team inside a kit.
-- A `role` is a stable responsibility seat with accountability, boundary, default permissions, and acceptance checks.
+- A `role` is a stable responsibility seat with accountability, boundary, context contract, default permissions, and acceptance checks.
+- A `context contract` defines the role's allowed inputs, excluded context, return packet, and memory-write rule.
 - A `mate` is a concrete worker assigned to a role. A role may have one or more mates.
 - An `assignment` is a run-specific task owned by a mate.
 
@@ -188,7 +197,7 @@ Shared roles are handled through role archetypes and scenario bindings:
 - `ROSTER.json` owns the current employee or mate roster.
 - `MATES.md` summarizes the operating contract and should not become the roster database.
 
-This lets several scenarios reuse the same role without pretending the scenario work is identical.
+This lets several scenarios reuse the same role without pretending the scenario work is identical. Context contracts keep each role from becoming a full-context agent; the main loop receives compressed return packets instead of every role's scratchpad.
 
 ## Ask Refinement And Scenario Selection
 
@@ -208,7 +217,7 @@ If the planning basis is incomplete, conflicting, or still undecided, Askdo may 
 
 Once the scenario planning gate is resolved, Askdo presents 1 to 3 complete scenarios. These scenarios are the result of the refinement discussion, not a substitute for it. The user chooses the scenario before Askdo builds or runs.
 
-Askdo should be creative in the scenario options, but the user has final decision authority.
+Askdo should be creative in the scenario options, but the kit owner or run decision-maker has final decision authority for generated kit work.
 
 ## Expert Brain Standard
 
@@ -300,6 +309,8 @@ User asset source of truth:
 
 User assets are source of truth for the owning project or kit. They are not Askdo product source, and internal Askdo quality review must not audit or mutate them unless the user explicitly expands the scope.
 
+Askdo product source is source of truth for the Askdo product. Public kit users may provide feedback or level signals, but product-source upgrades are governed by the product maintainer, product checks, and release process.
+
 Runtime output is not product source of truth.
 
 ## Execution Model
@@ -317,7 +328,7 @@ Simple user experience must not weaken internal control.
 
 Askdo must preserve:
 
-- final user authority
+- separated product maintainer and kit owner authority
 - approvals for high-risk operations
 - permission boundaries
 - role and mate responsibility boundaries

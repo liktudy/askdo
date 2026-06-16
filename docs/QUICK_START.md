@@ -8,7 +8,7 @@ This guide shows the shortest path from a user ask to a runnable kit through a h
 Install the Askdo Codex plugin.
 ```
 
-Codex is the first platform example. Other platforms should be added later under `platforms/`.
+Codex is the first platform example. Platform wrappers live under `platforms/`, including OpenCode.
 
 ## 2. Start With One Ask
 
@@ -123,10 +123,18 @@ Non-blocking improvements should become level notes rather than audit failures.
 Run an Askdo internal workshop.
 ```
 
-This reviews Askdo itself, not a user kit. It is keyword-triggered maintenance and should not be shown as ordinary public onboarding.
+This reviews Askdo itself, not a user kit. It is product-maintainer-triggered maintenance and should not be shown as ordinary public onboarding.
 
-## 9. Preserve User Assets
+## 9. Product Evolution
+
+```text
+Run Askdo product evolution.
+```
+
+This evolves Askdo product source under product maintainer authority. It is not a public kit-user capability.
+
+## 10. Preserve User Assets
 
 Uninstalling Askdo must not delete kits.
 
-Physical deletion of a kit is destructive and requires explicit user approval.
+Physical deletion of a kit is destructive and requires explicit kit owner approval.

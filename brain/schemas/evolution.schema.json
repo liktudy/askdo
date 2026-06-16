@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Askdo Product Evolution Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "scope", "target", "generated_at", "signals", "candidates", "actions_taken", "decisions_required", "learning_records", "verification", "recommended_next_action"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "scope": {
+      "type": "string",
+      "const": "askdo_product_evolution"
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "path"],
+      "properties": {
+        "id": { "type": "string", "const": "askdo" },
+        "path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "signals": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/signal" }
+    },
+    "candidates": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/candidate" }
+    },
+    "actions_taken": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/action" }
+    },
+    "decisions_required": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/decision" }
+    },
+    "learning_records": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/learning_record" }
+    },
+    "verification": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/verification" }
+    },
+    "recommended_next_action": {
+      "type": "string",
+      "enum": ["apply_safe_changes", "request_product_maintainer_decision", "record_learning_only", "stop"]
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "note"],
+      "properties": {
+        "file": { "type": "string", "minLength": 1 },
+        "line": { "type": "integer", "minimum": 1 },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    },
+    "signal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "summary", "evidence"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "type": {
+          "type": "string",
+          "enum": ["drift", "missing_contract", "repeated_friction", "negative_space", "external_pattern", "runtime_evidence", "concept_compression", "authority_confusion"]
+        },
+        "summary": { "type": "string", "minLength": 1 },
+        "evidence": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidence" }
+        }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "summary", "impact", "risk_level", "authority_domain", "current_loop_action", "evidence"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "summary": { "type": "string", "minLength": 1 },
+        "impact": { "type": "string", "minLength": 1 },
+        "risk_level": { "type": "string", "enum": ["low", "normal", "high", "critical"] },
+        "authority_domain": { "type": "string", "enum": ["product_maintainer", "kit_owner"] },
+        "current_loop_action": { "type": "string", "enum": ["apply_now", "request_decision", "record_learning", "reject"] },
+        "evidence": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/evidence" }
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_id", "action", "files_changed"],
+      "properties": {
+        "candidate_id": { "type": "string", "minLength": 1 },
+        "action": { "type": "string", "minLength": 1 },
+        "files_changed": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate_id", "decision_needed", "options"],
+      "properties": {
+        "candidate_id": { "type": "string", "minLength": 1 },
+        "decision_needed": { "type": "string", "minLength": 1 },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "learning_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "summary", "implication"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "summary": { "type": "string", "minLength": 1 },
+        "implication": { "type": "string", "minLength": 1 }
+      }
+    },
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "status", "summary"],
+      "properties": {
+        "command": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "enum": ["pass", "fail", "not_run"] },
+        "summary": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

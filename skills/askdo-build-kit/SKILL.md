@@ -24,18 +24,22 @@ Use this skill when no existing kit can naturally handle the user ask.
 2. Check existing kits first through the registry.
 3. Choose a short kebab-case kit name.
 4. Define the kit purpose and boundary.
-5. Create `kit.json` using `brain/schemas/kit.schema.json`.
-6. Set new kits to `under_review` with `build_approval.status` as `pending`.
-7. Create `ENTRY.md` as the single run entry for this kit.
-8. Create `FLOW.md` with a flow map, decision gates, rejection paths, assignment mapping, review, output, and failure handling.
-9. Create `ROLES.json` with one crew, stable roles, role archetypes, scenario bindings, default permissions, and acceptance checks.
-10. Create `ROSTER.json` with concrete mates assigned to roles.
-11. Create `MATES.md` as a human-readable operating contract summary that points to `ROLES.json` and `ROSTER.json`.
-12. Apply language config: machine-readable controls stay English; user-facing narrative follows configured defaults when appropriate.
-13. Do not create extra crews, roles, mates, templates, or future workflows by default.
-14. Create a choice gate before execution.
-15. Write `DECISION_REQUEST.md` and `DECISION_REQUEST.json` or render the same choices through an adapter.
-16. Stop until the user chooses approve, revise, or reject.
+5. Define the kit mission: why it exists, observable success, constraints, and out-of-scope work.
+6. Create `kit.json` using `brain/schemas/kit.schema.json`.
+7. Set new kits to `under_review` with `build_approval.status` as `pending`.
+8. Create `ENTRY.md` as the single run entry for this kit.
+9. Create `FLOW.md` with a flow map, decision gates, rejection paths, assignment mapping, review, output, and failure handling.
+10. Create `ROLES.json` with one crew, stable roles, role archetypes, context contracts, scenario bindings, default permissions, and acceptance checks.
+11. Create `ROSTER.json` with concrete mates assigned to roles.
+12. Create `MATES.md` as a human-readable operating contract summary that points to `ROLES.json` and `ROSTER.json`.
+13. Apply language config: machine-readable controls stay English; user-facing narrative follows configured defaults when appropriate.
+14. Do not create extra crews, roles, mates, templates, or future workflows by default.
+15. Run a current-loop quality pass before approval: check mission fit, boundary, context contracts, flow closure, role clarity, mate responsibility, permission level, result usefulness, and language fit.
+16. Revise safe in-scope issues immediately.
+17. Convert non-blocking reusable findings into concrete level notes with evidence, implication, and next trigger; do not leave them as vague future optimization.
+18. Create a choice gate before execution.
+19. Write `DECISION_REQUEST.md` and `DECISION_REQUEST.json` or render the same choices through an adapter.
+20. Stop until the user chooses approve, revise, or reject.
 
 ## Role And Mate Rules
 
@@ -43,11 +47,15 @@ Use this skill when no existing kit can naturally handle the user ask.
 - A mate is a concrete worker assigned to a role.
 - A role may have one or more mates.
 - Shared roles use role archetypes and scenario bindings.
+- Roles define context contracts: inputs, exclusions, return packet, and memory-write rule.
 - Employee or mate add/remove/pause changes belong in `ROSTER.json`.
 - Do not use broad phase-bucket mates such as generic builder, runner, handler, or manager.
 - If a role needs unrelated capabilities, split the role or add separate mates with clear boundaries.
 - A generated kit is not executable until the user approves it.
 - Approval must be requested with explicit choices, not an execution command.
+- Known safe improvements found during build must be applied before approval instead of being postponed.
+- Improvements must stay tied to the kit mission; do not add complexity that does not improve observable success.
+- Do not let every role read all kit, run, audit, or scratchpad context by default.
 
 ## Decision Request
 

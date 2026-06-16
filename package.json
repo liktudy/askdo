@@ -1,8 +1,8 @@
 {
   "name": "askdo",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "type": "module",
-  "description": "Askdo turns a user ask into a reusable business kit and executable multi-agent flow.",
+  "description": "Askdo turns a user ask into a reusable business loop with executable multi-agent flow.",
   "main": "platforms/opencode/.opencode/plugins/askdo.js",
   "scripts": {
     "check": "node scripts/check.js",

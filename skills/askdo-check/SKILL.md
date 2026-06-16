@@ -18,10 +18,11 @@ This is a rule check, not the full multi-role kit audit. Use `askdo-audit-kit` w
 - new kits do not execute unless `status` is `active` and `build_approval.status` is `approved`.
 - `ENTRY.md` exists as the single kit run entry.
 - `FLOW.md` includes a flow map with decision gates and revision or stop paths.
-- `ROLES.json` defines the crew, roles, archetypes, scenario bindings, default permissions, and acceptance checks.
+- `ROLES.json` defines the crew, roles, archetypes, context contracts, scenario bindings, default permissions, and acceptance checks.
 - `ROSTER.json` maps mates to roles and active statuses.
 - `MATES.md` summarizes the operating contract and points to structured role and roster files.
 - each role has one or more active mates before execution.
+- each role has a context contract with inputs, exclusions, return packet, and memory-write rule.
 - mates are concrete workers under roles.
 - mates have single responsibilities inside their roles.
 - high-risk work has approval points.

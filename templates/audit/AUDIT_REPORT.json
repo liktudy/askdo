@@ -13,6 +13,7 @@
     "boundary": 0,
     "flow": 0,
     "crew": 0,
+    "context_contract": 0,
     "approval": 0,
     "output": 0,
     "reuse": 0,

@@ -6,6 +6,18 @@ The user's request or business need.
 
 An ask may be incomplete. Askdo refines it before build or execution.
 
+## Product Maintainer
+
+The person or team responsible for Askdo product source.
+
+The product maintainer owns Askdo rules, schemas, skills, templates, platform adapters, release versioning, and product-source evolution. Generated kit users do not approve Askdo product upgrades.
+
+## Kit Owner
+
+The person or team that owns a generated kit and its user-owned assets.
+
+The kit owner has final authority over kit approval, execution, lifecycle decisions, deletion, deliverables, and boundary-expanding changes inside that kit.
+
 ## Scenario
 
 A complete user-selectable path from ask to result.
@@ -30,6 +42,12 @@ A user-owned reusable business capability pack.
 
 A kit is not an installed Askdo skill. It is generated or maintained by the user through Askdo.
 
+## Mission
+
+The concrete reason a kit exists.
+
+A kit mission includes why the kit matters, what observable success looks like, constraints that bound the work, and adjacent work that is out of scope. Askdo uses the mission as the compass for build, audit, run, and level decisions.
+
 ## Registry
 
 The project config and asset roots used to find user-owned kits, runs, and deliverables.
@@ -51,6 +69,12 @@ A crew is made of roles and the mates assigned to those roles.
 A stable responsibility seat inside a crew.
 
 A role defines accountability, boundary, default permissions, and acceptance checks. A role is not a worker by itself.
+
+## Context Contract
+
+A role-level contract that controls context boundaries.
+
+It defines the inputs a role may use, the context it should exclude by default, the compressed return packet it sends back to the main loop, and whether it may write memory, propose level notes, or update kit source after approval.
 
 ## Role Archetype
 
@@ -80,7 +104,7 @@ Askdo runs one kit through `ENTRY.md`, after checking kit approval, status, boun
 
 A structured approval request with explicit choices.
 
-Askdo creates a choice gate and waits for the user decision before execution. The gate may be shown through host UI, Markdown, JSON, or another adapter surface.
+Askdo creates a choice gate and waits for the authorized decision-maker before execution. The gate may be shown through host UI, Markdown, JSON, or another adapter surface.
 
 ## Run
 
@@ -90,15 +114,23 @@ One execution of a kit flow.
 
 The useful output returned to the user.
 
+## Loop
+
+The active build, run, review, and level cycle around a kit.
+
+A loop is not an infinite autonomous retry. It is the current improvement cycle that turns findings into one of four actions: revise now, ask the authorized decision-maker to decide, record a concrete level note with the next trigger, or reject the finding as not useful.
+
 ## Level
 
 Meaningful feedback used to improve kit granularity, precision, reuse, lifecycle, or performance.
+
+Level must not become a parking lot for vague future work. A level signal is valid only when it has evidence, an implication, and either an immediate action or the next review, run, audit, or authorized decision that should consume it.
 
 ## Audit
 
 A structured quality review.
 
-External kit audit reviews user-owned kits. Internal Askdo audit reviews Askdo itself and is keyword-triggered maintenance.
+External kit audit reviews user-owned kits. Internal Askdo audit reviews Askdo itself and is product-maintainer-triggered maintenance.
 
 ## Audit Verdict
 
@@ -117,7 +149,7 @@ reject_or_rebuild
 
 A non-blocking improvement signal.
 
-Level notes are saved only when they improve future reuse, quality, lifecycle decisions, or performance. They are not process logs.
+Level notes are saved only when they improve reuse, quality, lifecycle decisions, or performance. They are not process logs, and they must include evidence, implication, and enough context to be consumed by the next relevant loop.
 
 ## Internal Workshop
 

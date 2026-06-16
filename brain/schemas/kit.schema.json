@@ -25,6 +25,29 @@
       "type": "string",
       "minLength": 1
     },
+    "mission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["why", "success_looks_like", "constraints", "out_of_scope"],
+      "properties": {
+        "why": {
+          "type": "string",
+          "minLength": 1
+        },
+        "success_looks_like": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "constraints": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "out_of_scope": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
     "entry_file": {
       "type": "string",
       "const": "ENTRY.md"

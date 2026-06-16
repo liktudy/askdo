@@ -1,11 +1,11 @@
 ---
 name: askdo-internal-workshop
-description: Run a keyword-triggered internal Askdo self review across brain, rules, schemas, skills, templates, docs, and platform adapters.
+description: Run a product-maintainer-triggered internal Askdo self review across brain, rules, schemas, skills, templates, docs, and platform adapters.
 ---
 
 # Askdo Internal Workshop
 
-Use this skill only when the user explicitly asks for Askdo self review, Askdo internal workshop, Askdo project audit, review Askdo itself, or internal maintenance review.
+Use this skill only when the Askdo product maintainer explicitly asks for Askdo self review, Askdo internal workshop, Askdo project audit, review Askdo itself, or internal maintenance review.
 
 ## Scope
 
@@ -38,11 +38,11 @@ platforms/
 - deferred backlog item
 
 6. Produce an internal workshop report in English using `templates/internal-workshop/` unless the user asks for a translated summary.
-7. Ask for explicit approval before structural or high-risk changes.
+7. Ask the product maintainer for explicit approval before structural or high-risk Askdo product-source changes.
 
 ## Rules
 
-- Keyword-triggered only.
+- Product-maintainer-triggered only.
 - Internal records stay in English.
 - Do not expose internal maintenance as normal public onboarding.
 - Do not modify user-owned kits by default.

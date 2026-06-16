@@ -86,7 +86,7 @@ Do not create process logs by default.
 External kit audit verdicts are:
 
 - `pass`: runnable without meaningful improvement notes.
-- `pass_with_level_notes`: runnable with non-blocking improvements recorded for later.
+- `pass_with_level_notes`: runnable with non-blocking improvements recorded for the next explicit loop trigger.
 - `revise_before_run`: not runnable until blocking issues are fixed.
 - `reject_or_rebuild`: boundary or structure should be rejected or rebuilt.
 
@@ -94,7 +94,7 @@ External kit audit verdicts are:
 
 ## Maturity Signals
 
-Kit maturity is a later lifecycle signal and should not replace status.
+Kit maturity is a lifecycle signal and should not replace status.
 
 Suggested maturity labels:
 

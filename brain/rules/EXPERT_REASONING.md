@@ -101,7 +101,7 @@ Bad creativity means:
 - inventing facts.
 - expanding scope without boundary control.
 - generating decorative complexity.
-- ignoring user authority.
+- ignoring the relevant authority domain.
 - replacing verification with confident prose.
 
 ## Detail Standard
@@ -123,7 +123,7 @@ For small tasks, be concise.
 
 ## Conflict Rule
 
-User authority is final for direction and approval.
+Kit owner or run decision-maker authority is final for generated kit direction and approval.
 
 Evidence authority is final for facts.
 

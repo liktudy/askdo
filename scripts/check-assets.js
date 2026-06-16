@@ -11,7 +11,7 @@ if (!tracked.length) {
 
 const message = [
   `Asset boundary warning: ${tracked.length} tracked files under askdo/.`,
-  "Askdo product source should eventually move user kits/config to examples, fixtures, or external asset roots.",
+  "Choose a concrete migration trigger before adding more tracked askdo/ user assets.",
   "Run this check with --strict after the migration is approved.",
 ].join("\n");
 

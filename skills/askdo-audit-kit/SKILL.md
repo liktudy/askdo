@@ -26,21 +26,24 @@ ROLES.json
 ROSTER.json
 ```
 
-4. Run the basic rule check from `askdo-check`.
-5. Review the kit across these dimensions:
+4. Read the kit mission from `kit.json` and `ENTRY.md`; use it as the audit compass.
+5. Run the basic rule check from `askdo-check`.
+6. Review the kit across these dimensions:
 
 - structure
 - boundary
 - flow
 - crew
 - roles and mates
+- context contracts
 - approvals and permissions
 - output usefulness
 - reuse and overlap
 - language and deliverability
+- mission fit
 
-6. Separate findings into blocking issues, non-blocking level notes, structural evolution candidates, and user preference decisions.
-7. Assign one verdict:
+7. Separate findings into blocking issues, non-blocking level notes, structural evolution candidates, and user preference decisions.
+8. Assign one verdict:
 
 ```text
 pass
@@ -49,9 +52,10 @@ revise_before_run
 reject_or_rebuild
 ```
 
-8. Produce a concise audit report using `templates/audit/`.
-9. If non-blocking improvements matter, recommend `record_level_and_run` instead of failing the kit.
-10. Do not modify the kit unless the user chooses an approved revision path.
+9. Produce a concise audit report using `templates/audit/`.
+10. If non-blocking improvements matter, recommend `record_level_and_run` instead of failing the kit.
+11. For every improvement, choose a current-loop action: revise now, ask the kit owner to decide, record a concrete level note with evidence, implication, and next trigger, or reject the finding as not useful.
+12. Do not modify the kit unless the user chooses an approved revision path.
 
 ## Output
 
@@ -70,4 +74,6 @@ Return:
 - Audit is not execution approval by itself.
 - Blocking findings require revision before run.
 - Non-blocking findings become level notes.
+- Level notes must include the next review, run, audit, or user decision that should consume them.
+- Level notes must include evidence and implication; do not record material merely covered or observed.
 - Do not create verbose process logs.

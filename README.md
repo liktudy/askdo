@@ -14,7 +14,7 @@ Operating loop:
 ask -> refine -> scenario -> build -> flow -> run -> result -> level
 ```
 
-Askdo lets a user describe a business need. The installed agent plugin first checks whether the ask is complete, feasible, logically closed, and settled enough for scenario planning. If the planning basis is incomplete, conflicting, or undecided, the decision-maker chooses whether to confirm, revise, resolve, accept proposed defaults, defer non-blocking planning items, or stop. Only after that planning gate is resolved does Askdo propose 1 to 3 complete scenarios, then build or reuse a user-owned `kit`, run the kit's multi-agent `flow`, produce a result, and record only meaningful feedback for future improvement.
+Askdo lets a user describe a business need. The installed agent plugin first checks whether the ask is complete, feasible, logically closed, and settled enough for scenario planning. If the planning basis is incomplete, conflicting, or undecided, the decision-maker chooses whether to confirm, revise, resolve, accept proposed defaults, defer non-blocking planning items, or stop. Only after that planning gate is resolved does Askdo propose 1 to 3 complete scenarios, then build or reuse a user-owned `kit`, run the kit's multi-agent `flow`, produce a result, and apply meaningful feedback inside the current loop whenever it can improve the kit, run, or result now.
 
 Askdo also keeps a lightweight asset and quality layer:
 
@@ -31,7 +31,7 @@ Askdo
 = installable capability layer
 + user-owned kits
 + multi-agent business flows
-+ result and feedback loop
++ result and improvement loop
 ```
 
 Askdo is not a heavy agent runtime, not a web dashboard, and not a traditional BPM tool.
@@ -43,17 +43,21 @@ Askdo is not a heavy agent runtime, not a web dashboard, and not a traditional B
 | `brain` | Built-in Askdo capability for understanding, planning, building, checking, and routing. |
 | `scenario` | A complete user-selectable path from ask to result, with outcome, assumptions, artifacts, risk, and closure logic. |
 | `kit` | User-owned reusable business capability pack. |
+| `mission` | The concrete reason a kit exists, with observable success, constraints, and out-of-scope boundaries. |
 | `flow` | Multi-agent business workflow inside a kit. |
 | `crew` | A cooperating team inside a kit, made of roles and their assigned mates. |
 | `role` | A stable responsibility seat inside a crew. |
+| `context contract` | A role-level contract that defines allowed inputs, excluded context, return packet, and memory-write rules. |
 | `role archetype` | A reusable role pattern that can be adapted through scenario bindings. |
 | `mate` | A concrete worker assigned to a role. A role may have one or more mates. |
 | `assignment` | One run-specific task owned by a mate. |
 | `run` | One execution of a kit. |
 | `result` | Output returned to the user. |
-| `level` | Improvement signal from real usage. |
+| `loop` | The active build, run, review, and level cycle that improves a kit instead of deferring useful work to a vague future. |
+| `level` | Evidence-backed improvement signal from real usage that is either applied now, queued with an explicit trigger, or rejected as not useful. |
 | `registry` | Project config and asset roots used to find user-owned kits, runs, and deliverables. |
 | `audit` | Quality review that classifies kit findings as blocking issues or non-blocking level notes. |
+| `evolution` | Product-maintainer-only Askdo product loop that detects drift, missing contracts, repeated friction, and safe product-source improvements. |
 
 ## First Use
 
@@ -87,7 +91,7 @@ revise_before_run
 reject_or_rebuild
 ```
 
-`pass_with_level_notes` means the kit can run, but Askdo should record meaningful non-blocking improvements for future level-up work.
+`pass_with_level_notes` means the kit can run, but Askdo must capture the non-blocking improvements in the same loop and either apply them immediately, attach them to the current decision request, or record a concrete level note with the next trigger.
 
 Approval is a choice gate:
 

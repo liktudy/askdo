@@ -3,42 +3,90 @@
     {
       "id": "kit-structure-auditor",
       "responsibility": "Check kit source files, schema compliance, lifecycle state, and entry consistency.",
-      "default_permission": "read_only"
+      "default_permission": "read_only",
+      "context_contract": {
+        "inputs": ["kit.json", "ENTRY.md", "required file list", "schemas"],
+        "exclusions": ["run scratchpads", "unrelated kit history"],
+        "return_packet": ["missing files", "schema issues", "lifecycle blockers"],
+        "memory_write": "propose_level_note"
+      }
     },
     {
       "id": "kit-boundary-reviewer",
       "responsibility": "Review whether the kit boundary is closed, reusable, and not materially overlapping another kit.",
-      "default_permission": "read_only"
+      "default_permission": "read_only",
+      "context_contract": {
+        "inputs": ["kit mission", "purpose", "ENTRY.md", "registry kit list"],
+        "exclusions": ["unapproved new objectives", "irrelevant external roots"],
+        "return_packet": ["boundary risks", "overlap warnings", "scope recommendation"],
+        "memory_write": "propose_level_note"
+      }
     },
     {
       "id": "flow-reviewer",
       "responsibility": "Review decision gates, failure paths, revision loops, delivery steps, and closure logic.",
-      "default_permission": "read_only"
+      "default_permission": "read_only",
+      "context_contract": {
+        "inputs": ["kit mission", "FLOW.md", "ENTRY.md", "approval rules"],
+        "exclusions": ["role scratchpads", "unrelated run artifacts"],
+        "return_packet": ["flow blockers", "revision path gaps", "closure risks"],
+        "memory_write": "propose_level_note"
+      }
     },
     {
       "id": "crew-reviewer",
       "responsibility": "Review role, mate, assignment, and roster responsibility clarity.",
-      "default_permission": "read_only"
+      "default_permission": "read_only",
+      "context_contract": {
+        "inputs": ["ROLES.json", "ROSTER.json", "MATES.md", "selected scenario"],
+        "exclusions": ["result draft unless reviewing assignment fit"],
+        "return_packet": ["role clarity issues", "mate responsibility issues", "context contract gaps"],
+        "memory_write": "propose_level_note"
+      }
     },
     {
       "id": "risk-permission-reviewer",
       "responsibility": "Review approval points, risk levels, permission expansion, and irreversible action controls.",
-      "default_permission": "read_only"
+      "default_permission": "read_only",
+      "context_contract": {
+        "inputs": ["approval rules", "permission declarations", "FLOW.md", "risk notes"],
+        "exclusions": ["content unrelated to risk or permission"],
+        "return_packet": ["approval blockers", "permission risks", "required user decisions"],
+        "memory_write": "propose_level_note"
+      }
     },
     {
       "id": "output-quality-reviewer",
       "responsibility": "Review usefulness, acceptance criteria, deliverability, and user-facing language fit.",
-      "default_permission": "read_only"
+      "default_permission": "read_only",
+      "context_contract": {
+        "inputs": ["kit mission", "result draft", "acceptance checks", "language config"],
+        "exclusions": ["builder scratchpad unless needed as evidence"],
+        "return_packet": ["result quality issues", "language fit notes", "delivery recommendation"],
+        "memory_write": "propose_level_note"
+      }
     },
     {
       "id": "level-curator",
       "responsibility": "Convert non-blocking findings into concise level notes without creating process logs.",
-      "default_permission": "read_only"
+      "default_permission": "read_only",
+      "context_contract": {
+        "inputs": ["non-blocking findings", "evidence", "implications", "kit mission"],
+        "exclusions": ["raw process logs", "speculative observations without evidence"],
+        "return_packet": ["level notes with evidence", "next triggers", "rejected noisy notes"],
+        "memory_write": "propose_level_note"
+      }
     },
     {
       "id": "internal-system-reviewer",
       "responsibility": "Review Askdo rules, flows, schemas, skills, templates, adapters, and public language consistency.",
-      "default_permission": "read_only"
+      "default_permission": "read_only",
+      "context_contract": {
+        "inputs": ["Askdo product source files", "internal workshop scope", "product language rules"],
+        "exclusions": ["user-owned kit assets unless scope is expanded"],
+        "return_packet": ["system findings", "proposed decisions", "source-of-truth gaps"],
+        "memory_write": "none"
+      }
     }
   ]
 }

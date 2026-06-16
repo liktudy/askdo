@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 
 const nowIso = () => new Date().toISOString();
 
@@ -45,7 +46,7 @@ const format = (payload) => JSON.stringify(payload, null, 2);
 
 const defaultProjectConfig = {
   product: "Askdo",
-  version: "0.1.4",
+  version: "0.1.5",
   kits_dir: "./askdo/kits",
   runs_dir: "./askdo/runs",
   asset_roots: {
@@ -69,7 +70,7 @@ const defaultProjectConfig = {
       "askdo-audit-kit",
       "askdo-level",
     ],
-    internal_keyword_only: ["askdo-internal-workshop"],
+    internal_keyword_only: ["askdo-internal-workshop", "askdo-evolve"],
     maintenance: [],
   },
   ownership: "user-managed",
@@ -135,6 +136,17 @@ const isConfirmPlanning = (input) =>
   ["confirm_planning_frame", "confirm", "1", "确认"].includes(cleanInput(input));
 
 const requiredKitFiles = ["kit.json", "ENTRY.md", "FLOW.md", "MATES.md", "ROLES.json", "ROSTER.json"];
+
+const hasContextContract = (role) => {
+  const contract = role?.context_contract;
+  return Boolean(
+    contract
+      && Array.isArray(contract.inputs)
+      && Array.isArray(contract.exclusions)
+      && Array.isArray(contract.return_packet)
+      && typeof contract.memory_write === "string",
+  );
+};
 
 const readKitSummary = (worktree, kitDir, rootDir) => {
   const kitPath = path.join(kitDir, "kit.json");
@@ -227,6 +239,7 @@ const auditKit = (worktree, input) => {
     boundary: 8,
     flow: 8,
     crew: 8,
+    context_contract: 8,
     approval: 10,
     output: 8,
     reuse: 7,
@@ -242,6 +255,8 @@ const auditKit = (worktree, input) => {
       blocking: true,
       summary: `Missing required files: ${kit.missing_files.join(", ")}`,
       recommendation: "Add the missing formal kit source files before running or approving this kit.",
+      current_loop_action: "revise_now",
+      next_trigger: "kit approval review",
     });
   }
 
@@ -254,6 +269,8 @@ const auditKit = (worktree, input) => {
       blocking: true,
       summary: `Kit status is ${kit.status}, not active.`,
       recommendation: "Resolve lifecycle status before execution.",
+      current_loop_action: "ask_user",
+      next_trigger: "user lifecycle decision",
     });
   }
 
@@ -266,6 +283,25 @@ const auditKit = (worktree, input) => {
       blocking: true,
       summary: `Build approval is ${kit.approval_status}, not approved.`,
       recommendation: "Use a decision gate before execution.",
+      current_loop_action: "ask_user",
+      next_trigger: "build approval decision",
+    });
+  }
+
+  const rolesDoc = readJson(path.join(worktree, kit.source_root, "ROLES.json"));
+  const roles = Array.isArray(rolesDoc?.roles) ? rolesDoc.roles : [];
+  const rolesMissingContextContract = roles.filter((role) => !hasContextContract(role)).map((role) => role.id || role.name || "unknown-role");
+  if (rolesMissingContextContract.length) {
+    scores.context_contract = Math.max(0, 10 - rolesMissingContextContract.length * 2);
+    improvement_notes.push({
+      id: "missing-context-contracts",
+      type: "context_contract",
+      priority: "normal",
+      blocking: false,
+      summary: `Roles missing context contracts: ${rolesMissingContextContract.join(", ")}`,
+      recommendation: "Add inputs, exclusions, return_packet, and memory_write to each role before the next run review.",
+      current_loop_action: "record_level_note",
+      next_trigger: "next kit audit or run review",
     });
   }
 
@@ -277,6 +313,8 @@ const auditKit = (worktree, input) => {
       blocking: false,
       summary: "Kit has no quality maturity signal.",
       recommendation: "Set quality.maturity after the next deep audit or stable reuse milestone.",
+      current_loop_action: "record_level_note",
+      next_trigger: "next deep audit or stable reuse milestone",
     });
   }
 
@@ -288,6 +326,8 @@ const auditKit = (worktree, input) => {
       blocking: false,
       summary: "Kit has no last audit verdict.",
       recommendation: "Run a deep kit audit and record last_audit_verdict when the findings matter.",
+      current_loop_action: "record_level_note",
+      next_trigger: "next deep kit audit",
     });
   }
 
@@ -319,9 +359,14 @@ const internalWorkshop = (worktree) => {
     "README.md",
     "docs/QUALITY_AND_ASSET_GOVERNANCE.md",
     "brain/schemas/internal-workshop.schema.json",
+    "brain/schemas/evolution.schema.json",
+    "brain/flows/EVOLVE_ASKDO.md",
     "templates/internal-workshop/INTERNAL_WORKSHOP_REPORT.md",
     "templates/internal-workshop/INTERNAL_WORKSHOP_REPORT.json",
+    "templates/evolution/EVOLUTION_REPORT.md",
+    "templates/evolution/EVOLUTION_REPORT.json",
     "skills/askdo-internal-workshop/SKILL.md",
+    "skills/askdo-evolve/SKILL.md",
     "platforms/opencode/lib/orchestrator.js",
     "platforms/opencode/.opencode/plugins/askdo.js",
     "platforms/codex/.codex-plugin/plugin.json",
@@ -342,7 +387,7 @@ const internalWorkshop = (worktree) => {
 
   const codexManifest = readJson(path.join(worktree, "platforms", "codex", ".codex-plugin", "plugin.json"));
   const codexSkills = new Set((codexManifest?.skills || []).map((skill) => skill.replace("../../skills/", "")));
-  for (const skill of ["askdo-list-kits", "askdo-audit-kit", "askdo-internal-workshop"]) {
+  for (const skill of ["askdo-list-kits", "askdo-audit-kit", "askdo-internal-workshop", "askdo-evolve"]) {
     if (!codexSkills.has(skill)) {
       findings.push({
         id: `${skill}-missing-from-codex`,
@@ -357,7 +402,7 @@ const internalWorkshop = (worktree) => {
 
   const opencodePlugin = path.join(worktree, "platforms", "opencode", ".opencode", "plugins", "askdo.js");
   const pluginText = fs.existsSync(opencodePlugin) ? fs.readFileSync(opencodePlugin, "utf8") : "";
-  for (const phrase of ["askdo-list-kits", "askdo-audit-kit", "askdo-internal-workshop"]) {
+  for (const phrase of ["askdo-list-kits", "askdo-audit-kit", "askdo-internal-workshop", "askdo-evolve"]) {
     if (!pluginText.includes(phrase)) {
       findings.push({
         id: `${phrase}-missing-from-opencode-bootstrap`,
@@ -393,7 +438,7 @@ const internalWorkshop = (worktree) => {
     proposed_decisions: structural
       ? [{
           id: "restore-internal-workshop-source",
-          decision_needed: "Restore missing internal workshop source files before future maintenance runs.",
+          decision_needed: "Restore missing internal workshop source files before the next maintenance run.",
           options: ["restore_missing_sources", "defer_to_internal_backlog"],
         }]
       : [],
@@ -409,14 +454,161 @@ const internalWorkshop = (worktree) => {
   };
 };
 
+const evolveAskdo = (worktree) => {
+  const requiredEvolutionFiles = [
+    "brain/flows/EVOLVE_ASKDO.md",
+    "brain/schemas/evolution.schema.json",
+    "templates/evolution/EVOLUTION_REPORT.md",
+    "templates/evolution/EVOLUTION_REPORT.json",
+    "skills/askdo-evolve/SKILL.md",
+  ];
+  const signals = [];
+  const candidates = [];
+  const decisions_required = [];
+  const actions_taken = [];
+  const learning_records = [];
+  const verification = [];
+
+  const missingEvolutionFiles = requiredEvolutionFiles.filter((file) => !fs.existsSync(path.join(worktree, file)));
+  if (missingEvolutionFiles.length) {
+    signals.push({
+      id: "missing-evolution-source",
+      type: "missing_contract",
+      summary: "Product evolution capability is referenced but missing source files.",
+      evidence: missingEvolutionFiles.map((file) => ({ file, note: "Expected product evolution source file is missing." })),
+    });
+    candidates.push({
+      id: "restore-evolution-source",
+      summary: "Restore missing product evolution source files.",
+      impact: "Askdo cannot run a complete product evolution loop without the flow, schema, templates, and skill.",
+      risk_level: "normal",
+      authority_domain: "product_maintainer",
+      current_loop_action: "request_decision",
+      evidence: missingEvolutionFiles.map((file) => ({ file, note: "Missing evolution source." })),
+    });
+    decisions_required.push({
+      candidate_id: "restore-evolution-source",
+      decision_needed: "Restore or intentionally remove the product evolution capability.",
+      options: ["restore_evolution_source", "remove_evolution_capability"],
+    });
+  }
+
+  const codexManifest = readJson(path.join(worktree, "platforms", "codex", ".codex-plugin", "plugin.json"));
+  const codexSkills = new Set((codexManifest?.skills || []).map((skill) => skill.replace("../../skills/", "")));
+  if (!codexSkills.has("askdo-evolve")) {
+    signals.push({
+      id: "evolve-missing-from-codex",
+      type: "drift",
+      summary: "askdo-evolve is not registered in the Codex plugin manifest.",
+      evidence: [{ file: "platforms/codex/.codex-plugin/plugin.json", note: "Skill list does not include askdo-evolve." }],
+    });
+    candidates.push({
+      id: "register-evolve-codex",
+      summary: "Register askdo-evolve in the Codex manifest.",
+      impact: "Product maintainer maintenance capability is not available through the Codex platform package.",
+      risk_level: "low",
+      authority_domain: "product_maintainer",
+      current_loop_action: "apply_now",
+      evidence: [{ file: "platforms/codex/.codex-plugin/plugin.json", note: "Missing askdo-evolve entry." }],
+    });
+  }
+
+  const opencodePlugin = path.join(worktree, "platforms", "opencode", ".opencode", "plugins", "askdo.js");
+  const pluginText = fs.existsSync(opencodePlugin) ? fs.readFileSync(opencodePlugin, "utf8") : "";
+  if (!pluginText.includes("askdo-evolve")) {
+    signals.push({
+      id: "evolve-missing-from-opencode-bootstrap",
+      type: "drift",
+      summary: "askdo-evolve is not described in the OpenCode bootstrap context.",
+      evidence: [{ file: "platforms/opencode/.opencode/plugins/askdo.js", note: "Bootstrap text does not mention askdo-evolve." }],
+    });
+    candidates.push({
+      id: "describe-evolve-opencode",
+      summary: "Describe askdo-evolve in the OpenCode bootstrap context.",
+      impact: "OpenCode users acting as product maintainers may not discover the internal evolution capability.",
+      risk_level: "low",
+      authority_domain: "product_maintainer",
+      current_loop_action: "apply_now",
+      evidence: [{ file: "platforms/opencode/.opencode/plugins/askdo.js", note: "Missing askdo-evolve bootstrap text." }],
+    });
+  }
+
+  const trackedAskdo = (() => {
+    try {
+      const gitDir = path.join(worktree, ".git");
+      if (!fs.existsSync(gitDir)) return [];
+      const output = execFileSync("git", ["ls-files", "askdo"], { cwd: worktree, encoding: "utf8" }).trim();
+      return output ? output.split(/\r?\n/).filter(Boolean) : [];
+    } catch {
+      return [];
+    }
+  })();
+  if (trackedAskdo.length) {
+    signals.push({
+      id: "tracked-user-assets",
+      type: "runtime_evidence",
+      summary: "Tracked askdo/ user assets still exist in product source.",
+      evidence: [{ file: "scripts/check-assets.js", note: `${trackedAskdo.length} tracked askdo/ files require a concrete migration trigger before adding more.` }],
+    });
+    candidates.push({
+      id: "decide-user-asset-migration",
+      summary: "Decide the migration trigger for tracked askdo/ user assets.",
+      impact: "Asset ownership remains noisy until the product maintainer decides whether and when to migrate legacy tracked user assets.",
+      risk_level: "normal",
+      authority_domain: "product_maintainer",
+      current_loop_action: "request_decision",
+      evidence: [{ file: "scripts/check-assets.js", note: "Asset boundary check reports tracked askdo/ files." }],
+    });
+    decisions_required.push({
+      candidate_id: "decide-user-asset-migration",
+      decision_needed: "Choose the product-maintainer trigger for migrating or retaining legacy tracked askdo/ assets.",
+      options: ["migrate_legacy_assets_now", "retain_until_specific_release", "convert_to_fixtures"],
+    });
+  }
+
+  if (!signals.length) {
+    learning_records.push({
+      id: "evolution-loop-clean",
+      summary: "No current product evolution signal required a change.",
+      implication: "Continue using check and smoke output as the first runtime evidence source for product evolution.",
+    });
+  }
+
+  verification.push({
+    command: "npm.cmd run check",
+    status: "not_run",
+    summary: "Run after applying product evolution changes.",
+  });
+
+  return {
+    schema_version: "1.0",
+    status: "completed",
+    mode: "evolve",
+    scope: "askdo_product_evolution",
+    target: { id: "askdo", path: "." },
+    generated_at: nowIso(),
+    signals,
+    candidates,
+    actions_taken,
+    decisions_required,
+    learning_records,
+    verification,
+    recommended_next_action: decisions_required.length
+      ? "request_product_maintainer_decision"
+      : candidates.some((candidate) => candidate.current_loop_action === "apply_now")
+        ? "apply_safe_changes"
+        : "record_learning_only",
+  };
+};
+
 const makePlanningFrame = (ask) => ({
   objective: ask,
   scope: "The selected Askdo business scenario inside current project boundaries.",
-  audience: "The user as final decision-maker.",
+  audience: "The kit owner or run decision-maker.",
   artifact_type: "Markdown result by default; CSV or JSON when the scenario benefits from structured data.",
   source_inputs: ["User ask", "Askdo source-of-truth files", "Public or project evidence when required"],
   constraints: [
-    "User has final decision authority.",
+    "Kit owner or run decision-maker has final authority for generated kit work.",
     "Newly generated kits require approval before execution.",
     "Boundary ambiguity must be escalated.",
   ],
@@ -477,6 +669,18 @@ const createPendingKit = ({ worktree, ask, selectedScenario }) => {
     version: "0.1.0",
     status: "under_review",
     purpose: `Handle the selected Askdo scenario: ${selectedScenario.name}.`,
+    mission: {
+      why: selectedScenario.outcome,
+      success_looks_like: [
+        "The run produces a reviewable result that satisfies the selected scenario closure logic.",
+      ],
+      constraints: [
+        "Stay inside the confirmed planning frame, Askdo approval rules, and available evidence.",
+      ],
+      out_of_scope: [
+        "Do not expand the kit boundary or permissions without a user decision.",
+      ],
+    },
     entry_file: "ENTRY.md",
     flow_file: "FLOW.md",
     mates_file: "MATES.md",
@@ -525,6 +729,24 @@ const createPendingKit = ({ worktree, ask, selectedScenario }) => {
 ## Purpose
 
 ${selectedScenario.outcome}
+
+## Mission
+
+Why this kit exists:
+
+${selectedScenario.outcome}
+
+Success looks like:
+
+- The run produces a reviewable result that satisfies the selected scenario closure logic.
+
+Constraints:
+
+- Stay inside the confirmed planning frame, Askdo approval rules, and available evidence.
+
+Out of scope:
+
+- Do not expand the kit boundary or permissions without a user decision.
 
 ## Run Gate
 
@@ -594,6 +816,28 @@ Roles are defined in \`ROLES.json\`. Concrete mates are defined in \`ROSTER.json
         accountability: "Execute the selected scenario inside the confirmed planning frame.",
         boundary: "Owns result drafting and escalates unclear boundaries.",
         default_permission: "L0 Observer",
+        context_contract: {
+          inputs: [
+            "selected scenario",
+            "kit mission",
+            "user ask",
+            "approved constraints",
+            "allowed evidence",
+          ],
+          exclusions: [
+            "reviewer critique scratchpad",
+            "unrelated run history",
+            "unapproved boundary-expanding context",
+          ],
+          return_packet: [
+            "result draft",
+            "evidence used",
+            "assumptions",
+            "unknowns",
+            "boundary questions",
+          ],
+          memory_write: "none",
+        },
         acceptance_checks: ["Result matches selected scenario.", "Uncertainty is stated."],
         scenario_bindings: [
           {
@@ -610,6 +854,27 @@ Roles are defined in \`ROLES.json\`. Concrete mates are defined in \`ROSTER.json
         accountability: "Review correctness, boundary fit, and usefulness.",
         boundary: "Owns review and does not expand scope without approval.",
         default_permission: "L0 Observer",
+        context_contract: {
+          inputs: [
+            "kit mission",
+            "selected scenario",
+            "result draft",
+            "acceptance checks",
+            "risk and permission rules",
+          ],
+          exclusions: [
+            "runner scratchpad unless needed as evidence",
+            "unrelated kit history",
+            "unapproved new objectives",
+          ],
+          return_packet: [
+            "blocking issues",
+            "non-blocking level notes with evidence and implication",
+            "approval recommendation",
+            "remaining unknowns",
+          ],
+          memory_write: "propose_level_note",
+        },
         acceptance_checks: ["Claims are supported or marked uncertain.", "Result closes the ask."],
         scenario_bindings: [
           {
@@ -794,6 +1059,10 @@ export const runAskdoTurn = async ({ input, mode = "ask", context }) => {
 
   if (mode === "internal_workshop") {
     return format(internalWorkshop(worktree));
+  }
+
+  if (mode === "evolve") {
+    return format(evolveAskdo(worktree));
   }
 
   if (state?.status === "waiting_for_planning_confirmation") {

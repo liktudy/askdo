@@ -12,6 +12,18 @@
       "accountability": "<stable responsibility seat>",
       "boundary": "<what this role owns and does not own>",
       "default_permission": "L0 Observer",
+      "context_contract": {
+        "inputs": [
+          "<context this role is allowed and expected to use>"
+        ],
+        "exclusions": [
+          "<context this role should not read or rely on by default>"
+        ],
+        "return_packet": [
+          "<compressed output this role must return to the main loop>"
+        ],
+        "memory_write": "none | propose_level_note | update_kit_after_approval"
+      },
       "acceptance_checks": [
         "<check>"
       ],

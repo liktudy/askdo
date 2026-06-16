@@ -6,7 +6,7 @@ Review Askdo itself as a product system rather than reviewing a user-owned kit.
 
 ## Trigger
 
-This flow should run only when the user explicitly asks for one of the following intents:
+This flow should run only when the Askdo product maintainer explicitly asks for one of the following intents:
 
 - Askdo self review
 - Askdo internal workshop
@@ -16,7 +16,7 @@ This flow should run only when the user explicitly asks for one of the following
 
 ## Flow
 
-1. Confirm the request targets Askdo itself, not a user kit.
+1. Confirm the request targets Askdo itself, not a user kit, and that the requester is acting as product maintainer.
 2. Inspect source-of-truth files:
 
 ```text
@@ -50,7 +50,7 @@ AGENTS.md
 - proposed decisions
 - backlog items
 - safe changes already applied, if approved
-- blocked changes requiring user authority
+- blocked changes requiring product maintainer authority
 
 ## Report Schema
 

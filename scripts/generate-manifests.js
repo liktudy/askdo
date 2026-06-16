@@ -20,6 +20,7 @@ const preferredSkillOrder = [
   "askdo-check",
   "askdo-audit-kit",
   "askdo-internal-workshop",
+  "askdo-evolve",
   "askdo-level",
 ];
 

@@ -16,6 +16,7 @@ Generated at: <ISO-8601 timestamp>
 | Boundary | <0-10> | <notes> |
 | Flow | <0-10> | <notes> |
 | Crew | <0-10> | <notes> |
+| Context Contract | <0-10> | <notes> |
 | Approval | <0-10> | <notes> |
 | Output | <0-10> | <notes> |
 | Reuse | <0-10> | <notes> |
@@ -28,6 +29,8 @@ Generated at: <ISO-8601 timestamp>
 ## Improvement Notes
 
 - <non-blocking level note or none>
+  Current-loop action: <revise_now | ask_user | record_level_note | reject_note>
+  Next trigger: <review | run | audit | user_decision | none>
 
 ## Unknowns
 

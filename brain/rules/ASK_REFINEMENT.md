@@ -26,7 +26,7 @@ The refinement prompt should:
 - ask the decision-maker how to handle the planning issues.
 - ask only the smallest useful number of questions when the user chooses to resolve planning issues now.
 - avoid forcing the user into internal implementation language.
-- preserve user authority over the final direction.
+- preserve kit owner or run decision-maker authority over the final direction.
 
 Do not build, run, or generate scenario options while the refinement gate is unresolved.
 

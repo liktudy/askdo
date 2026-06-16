@@ -37,7 +37,10 @@ Treat these as user-owned project assets. They are source of truth for the ownin
 
 ## Iron Rules
 
-- The user has final decision authority.
+- Askdo product source and generated user-owned kits have separate authority domains.
+- Askdo product source changes belong to the Askdo product maintainer.
+- Generated kit, run, and deliverable decisions belong to the kit owner or run decision-maker.
+- Do not ask ordinary kit users to approve Askdo product-source upgrades.
 - Boundary ambiguity must be escalated instead of decided silently.
 - High-risk, irreversible, destructive, or structural changes require explicit approval.
 - Askdo may build or reuse kits, but user-owned kits must not be deleted by default.
@@ -59,7 +62,8 @@ Treat these as user-owned project assets. They are source of truth for the ownin
 - External deliverables are produced through delivery processing and must not change source conclusions.
 - Askdo must support user-owned kit roots outside the current folder through `askdo/config.json`.
 - Askdo must distinguish external user kit quality from internal Askdo project quality.
-- Internal Askdo self review must be keyword-triggered and must not be exposed as ordinary public onboarding.
+- Internal Askdo self review must be product-maintainer-triggered and must not be exposed as ordinary public onboarding.
+- Askdo product evolution must be product-maintainer-triggered and must not be exposed as ordinary public kit-user onboarding.
 - Askdo must distinguish facts, assumptions, inferences, and unknowns for substantial asks.
 - Askdo must verify names, dates, numbers, citations, source files, schemas, generated artifacts, and current product behavior when the answer depends on them.
 - Askdo must state uncertainty instead of inventing facts.
@@ -79,9 +83,11 @@ Treat these as user-owned project assets. They are source of truth for the ownin
 - Keep final artifacts, error reports, decision requests, and meaningful kit updates only.
 - Use `pass_with_level_notes` when a kit can run but has useful non-blocking improvements.
 - Record non-blocking kit improvements as level notes instead of treating every improvement as an audit failure.
+- Every Askdo iteration must improve the current project, kit, run, result, or decision record now; do not hide useful optimization behind an unowned future plan.
+- When Askdo finds a useful improvement, it must choose one current-loop action: revise now, record a concrete level note with an explicit trigger, ask the authorized decision-maker to decide, or reject the note as not useful.
 - Agents may propose creative alternatives within their boundaries, but execution authority still follows approval and boundary rules.
 - Agents may challenge weak premises, deliver negative conclusions, and recommend stronger paths when evidence supports them.
-- Creativity must remain tied to feasibility, evidence, and user authority.
+- Creativity must remain tied to feasibility, evidence, and the relevant authority domain.
 
 ## Product Language
 
@@ -90,17 +96,21 @@ Use public Askdo terms when facing users:
 - `ask`
 - `build`
 - `kit`
+- `mission`
 - `flow`
 - `crew`
 - `role`
+- `context contract`
 - `mate`
 - `assignment`
 - `run`
 - `result`
+- `loop`
 - `level`
 - `brain`
 - `registry`
 - `audit`
+- `evolution`
 
 Avoid exposing heavy internal organization language such as headquarters, subsidiary, company, department, workflow factory, or organization design in public onboarding.
 
@@ -118,9 +128,10 @@ Askdo settles the scenario planning basis with the user before recommending scen
 If planning direction is incomplete, conflicting, or undecided, Askdo asks the user whether to confirm, revise, resolve, default, defer non-blocking planning items, or stop.
 Askdo offers 1 to 3 complete scenarios for the user to choose.
 Askdo builds or reuses a kit.
+Askdo anchors each kit in a mission with observable success, constraints, and out-of-scope boundaries.
 Askdo runs the flow or prepares the run.
 Askdo returns a result.
-Askdo records meaningful level signals and quality notes.
+Askdo applies meaningful improvements inside the current loop or records a concrete level note with the next trigger.
 ```
 
 Codex is the first platform example. Other platforms must be added under `platforms/` without changing `brain/`, `skills/`, or `templates/`.

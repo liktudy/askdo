@@ -54,7 +54,7 @@ Kits must not:
 
 External kit quality reviews user-owned kit assets.
 
-Internal Askdo quality reviews Askdo product source files and is keyword-triggered maintenance.
+Internal Askdo quality reviews Askdo product source files and is product-maintainer-triggered maintenance.
 
 The two systems must not be blended. A user kit audit must not silently become an Askdo self review, and an Askdo self review must not silently mutate user-owned kits.
 
@@ -74,6 +74,7 @@ Each role must define:
 
 - accountability
 - boundary
+- context contract
 - default permission level
 - acceptance checks
 - one or more assigned mates
@@ -82,11 +83,24 @@ A role must not be treated as a worker. Execution happens through mates and run-
 
 Shared role responsibilities must be modeled as role archetypes with scenario bindings when the same role appears in multiple scenarios.
 
+## Context Boundary
+
+A context contract defines:
+
+- inputs: the minimum context a role or mate should receive.
+- exclusions: context that should stay out of the role by default.
+- return packet: the compressed result the role gives back to the main loop.
+- memory write: whether the role may write nothing, propose a level note, or update kit source after approval.
+
+Roles and mates must not read broad project, run, or scratchpad context just because it is available. If an assignment needs more context than the contract allows, Askdo must revise the contract or ask for approval before execution.
+
 ## Mate Boundary
 
 A mate is a concrete worker assigned to one role.
 
 Each mate must have one primary responsibility within its role.
+
+Each mate inherits the role's context contract.
 
 A mate may recommend work outside its boundary, but must not execute outside its boundary.
 

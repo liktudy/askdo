@@ -1,7 +1,7 @@
 {
   "name": "askdo",
-  "version": "0.1.0",
-  "description": "Askdo turns a user ask into a reusable business kit and executable multi-agent flow.",
+  "version": "0.1.5",
+  "description": "Askdo turns a user ask into a reusable business loop with executable multi-agent flow.",
   "author": {
     "name": "Askdo"
   },
@@ -14,8 +14,8 @@
   ],
   "interface": {
     "displayName": "Askdo",
-    "shortDescription": "Turn business asks into reusable kits and executable flows.",
-    "longDescription": "Askdo helps a host agent understand a business need, build or reuse a user-owned kit, run the kit flow, and return a practical result.",
+    "shortDescription": "Turn business asks into reusable loops and executable flows.",
+    "longDescription": "Askdo helps a host agent understand a business need, build or reuse a user-owned kit, run the kit flow, improve the current loop, and return a practical result.",
     "developerName": "Askdo",
     "category": "Productivity",
     "capabilities": [
