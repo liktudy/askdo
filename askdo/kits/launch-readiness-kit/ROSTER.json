@@ -1,9 +1,0 @@
-{
-  "mates": [
-    {"id": "scope-framer", "role_id": "readiness-director", "responsibility": "Frame launch scope, assumptions, and decision criteria.", "permission": "L0 Observer", "status": "active"},
-    {"id": "product-checker", "role_id": "product-readiness-reviewer", "responsibility": "Review product completeness and user readiness.", "permission": "L0 Observer", "status": "active"},
-    {"id": "ops-checker", "role_id": "operations-readiness-reviewer", "responsibility": "Review process, support, ownership, and rollout readiness.", "permission": "L0 Observer", "status": "active"},
-    {"id": "risk-mapper", "role_id": "risk-reviewer", "responsibility": "Map blockers, dependencies, mitigations, and residual risk.", "permission": "L0 Observer", "status": "active"},
-    {"id": "decision-writer", "role_id": "decision-producer", "responsibility": "Write LAUNCH_READINESS_REPORT.md, RISK_REGISTER.csv, and GO_NO_GO_DECISION.md.", "permission": "L3 Executor", "status": "active"}
-  ]
-}
